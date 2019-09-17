@@ -1,11 +1,11 @@
 function ballClass(x, y, vx, vy, ax, ay, radius){
   this.radius = radius;
   this.loc = new JSVector(x, y);
-  this.vel = new JSVector(x, y);
-  this.accel = new JSVector(ax, ay);
+  this.vel = new JSVector(vx, vy);
+  this.acc = new JSVector(ax, ay);
 }
 
-ballClass.render = function(){
+ballClass.prototype.render = function(){
   ctx.strokeStyle = 'rgb(85, 107, 47)';
   ctx.lineWidth = '10';
   ctx.fillStyle = 'rgb(255, 140, 0)';
@@ -16,13 +16,13 @@ ballClass.render = function(){
   ctx.stroke();
 }
 
-ballClass.update = function(){
+ballClass.prototype.update = function(){
   this.loc.add(this.vel);
   this.vel.add(this.acc);
 }
 
 
-ballClass.checkEdges = function(){
+ballClass.prototype.checkEdges = function(){
   if(this.loc.x + this.radius > cnv.width || this.loc.x - this.radius < 0){
     this.vel.x = -this.vel.x;
   }
@@ -32,7 +32,7 @@ ballClass.checkEdges = function(){
   }
 }
 
-ballClass.run = function(){
+ballClass.prototype.run = function(){
   this.update();
   this.render();
   this.checkEdges();
