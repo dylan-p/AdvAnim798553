@@ -1,8 +1,9 @@
-function ballClass(x, y, vx, vy, ax, ay, radius){
+function ballClass(x, y, vx, vy, ax, ay, radius, mass){
   this.radius = radius;
   this.loc = new JSVector(x, y);
   this.vel = new JSVector(vx, vy);
-  this.acc = new JSVector(ax, ay);
+  this.force = new JSVector(ax, ay);
+  this.acc = new JSVector(ax/mass, ay/mass);
 }
 
 ballClass.prototype.render = function(){
