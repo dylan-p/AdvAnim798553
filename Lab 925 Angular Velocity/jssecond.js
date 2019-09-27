@@ -6,8 +6,9 @@ var loc = [[]];
 var vel = [[]];
 var accel = new JSVector(0, 0.098);
 */
-var numBal = 10;
-var ball;
+var numBal = 100;
+var numOrb = 10;
+var ball = [];
 var bnw;
 
 function init(){
@@ -17,8 +18,9 @@ function init(){
   cnv.style.border = 'solid black 2px';
   cnv.style.backgroundColor = 'rgba(0,44,55, 0.1575)';
   ctx = cnv.getContext('2d');
-  ball = new ballClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0.03, 50*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random());
-  //bnw = new ballClass(350, 350, 0.1, 0.1, 0, 0, 30*Math.random()+15, 0, 0, 0, 255, 255, 255);
+ for(let a= 0; a<numBal; a++){
+    ball[a] = new ballClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0.03, 50*Math.random()+15, 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 50+Math.random()*300);
+ }
 /*for(let a= 0; a<numBal; a++){
   loc[a] = new JSVector(Math.random()*window.innerWidth, Math.random()*window.innerHeight);
   vel[a] = new JSVector(Math.random()*3, -Math.random()*3);
@@ -31,6 +33,8 @@ animate();
 function animate(){
   requestAnimationFrame(animate);
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-  ball.run();
+ for(let a = 0; a<numBal; a++){
+  ball[a].run();
+}
 //bnw.run();
 }

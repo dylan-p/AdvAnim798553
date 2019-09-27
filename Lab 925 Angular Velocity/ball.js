@@ -1,4 +1,5 @@
-function ballClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, c1, c2, c3){
+
+function ballClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, c1, c2, c3, orbRad){
   this.radius = radius;
   this.loc = new JSVector(x, y);
   this.vel = new JSVector(vx, vy);
@@ -10,7 +11,10 @@ function ballClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, c1, c2, c3){
   this.c1 = c1;
   this.c2 = c2;
   this.c3 = c3;
-  this.orbiter = new Orbiter(10, 0, 0, 200);
+  this.orbiter = [];
+  for(let a = 0; a<numOrb; a++){
+    this.orbiter[a] = new Orbiter(9, 0, 0, orbRad, ((2*Math.PI)/(numOrb)*a), this.loc);
+  }
 }
 
 ballClass.prototype.render = function(){
@@ -26,13 +30,17 @@ ballClass.prototype.render = function(){
   //ctx.triange(this.loc.x, this.loc.y, this.loc.x+this.radius, this.loc.y+this.radius, this.loc.x-this.radius, this.loc.y+this.radius);
   ctx.fill();
   ctx.stroke();
-  this.orbiter.render();
+  for(let a = 0; a<numOrb; a++){
+  this.orbiter[a].render();
+  }
 }
 
 ballClass.prototype.update = function(){
   this.vel.add(this.acc);
   this.loc.add(this.vel);
-  this.orbiter.update();
+  for(let a = 0; a<numOrb; a++){
+    this.orbiter[a].update();
+  }
 }
 
 ballClass.prototype.quentin = function(v2){
