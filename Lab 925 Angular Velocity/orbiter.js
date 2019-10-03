@@ -1,11 +1,11 @@
-function Orbiter(radius, x, y, orbRad, angle, ballLoc, balNum){
+function Orbiter(radius, x, y, orbRad, angle, ballLoc, parentBal){
   this.radius = radius;
   this.loc = new JSVector(x, y);
   this.angle = angle;
   this.orbRad = orbRad;
   this.ballLoc = ballLoc;
   this.inOut = false;
-  this.balNum = balNum;
+  this.parent = parentBal;
 }
 
 Orbiter.prototype.render = function(){
@@ -42,8 +42,8 @@ Orbiter.prototype.update = function(){
         this.orbRad-=0;
       }*/
 
-    for(b = 0; b < numBal; b++){
-      if((ball[this.balNum].loc.distance(ball[b].loc) < 200) && ball[this.balNum]!=ball[b]){
+    for(let b = 0; b < numBal; b++){
+      if((this.parent.loc.distance(ball[b].loc) < 200) && this.parent!==ball[b]){
           this.orbRad = 200;
       }else{
         this.orbRad = 75;

@@ -18,7 +18,7 @@ function init(){
   cnv.style.border = 'solid black 2px';
   cnv.style.backgroundColor = 'rgba(0,44,55, 0.1575)';
   ctx = cnv.getContext('2d');
- for(let a= 0; a<numBal; a++){
+ for(let a = 0; a<numBal; a++){
     ball[a] = new ballClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0.03, 50*Math.random()+15, 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 50+Math.random()*300, a);
  }
 /*for(let a= 0; a<numBal; a++){

@@ -12,8 +12,10 @@ function ballClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, c1, c2, c3, orbRad,
   this.c2 = c2;
   this.c3 = c3;
   this.orbiter = [];
+  this.weer = weer;
+  console.log(this);
   for(let a = 0; a<numOrb; a++){
-    this.orbiter[a] = new Orbiter(9, 0, 0, orbRad, ((2*Math.PI)/(numOrb)*a), this.loc, weer);
+    this.orbiter[a] = new Orbiter(9, 0, 0, orbRad, ((2*Math.PI)/(numOrb)*a), this.loc, this);
   }
 }
 
@@ -27,7 +29,6 @@ ballClass.prototype.render = function(){
   ctx.lineTo(this.loc.x, this.loc.y+(this.radius));
   ctx.lineTo(this.loc.x+(this.radius), this.loc.y);
   ctx.closePath();
-  //ctx.triange(this.loc.x, this.loc.y, this.loc.x+this.radius, this.loc.y+this.radius, this.loc.x-this.radius, this.loc.y+this.radius);
   ctx.fill();
   ctx.stroke();
   for(let a = 0; a<numOrb; a++){
