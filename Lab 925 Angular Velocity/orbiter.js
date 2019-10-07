@@ -4,7 +4,7 @@ function Orbiter(radius, x, y, orbRad, angle, ballLoc, parentBal){
   this.angle = angle;
   this.orbRad = orbRad;
   this.ballLoc = ballLoc;
-  this.inOut = false;
+  this.inOut = 3;
   this.parent = parentBal;
 }
 
@@ -29,25 +29,19 @@ Orbiter.prototype.update = function(){
     this.loc.x = this.ballLoc.x + this.orbRad*Math.cos(this.angle);
     this.loc.y = this.ballLoc.y + this.orbRad*Math.sin(this.angle);
     this.angle += 0.01;
-  /*  if(this.orbRad<20){
-      this.inOut = false;
-    }
-    if(this.orbRad>330){
-        this.inOut = true;
-      }*/
-    /*if(this.inOut == false){
+   // if(this.orbRad<20){
+   //    this.inOut = false;
+   //  }
+   //  if(this.orbRad>330){
+   //      this.inOut = true;
+   //    }
+    if(this.inOut == 1){
         this.orbRad+=6;
     }
-    if(this.inOut == true){
+    if(this.inOut == 2){
+        this.orbRad-=4;
+    }
+    if(this.inOut == 3){
         this.orbRad-=0;
-      }*/
-
-    for(let b = 0; b < numBal; b++){
-      if((this.parent.loc.distance(ball[b].loc) < 200) && this.parent!==ball[b]){
-          this.orbRad = 200;
-      }else{
-        this.orbRad = 75;
-
-      }
     }
 }

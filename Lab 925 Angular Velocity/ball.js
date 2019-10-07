@@ -39,8 +39,21 @@ ballClass.prototype.render = function(){
 ballClass.prototype.update = function(){
   this.vel.add(this.acc);
   this.loc.add(this.vel);
+  var kai = false;
+  for(let b = 0; b < numBal; b++){
+    if((this.loc.distance(ball[b].loc) < 200) && this!==ball[b]){
+      kai = true;
+      this.peter(ball[b]);
+    }
+  }
   for(let a = 0; a<numOrb; a++){
     this.orbiter[a].update();
+    if(kai == true){
+      this.orbiter[a].orbRad = 200;
+    }
+    if(kai == false){
+      this.orbiter[a].orbRad = 75;
+    }
   }
 }
 
@@ -54,6 +67,13 @@ ballClass.prototype.quentin = function(v2){
   }
 }
 
+ballClass.prototype.peter = function(v2){
+    var attractionForce = JSVector.subGetNew(v2.loc, this.loc);
+    attractionForce.normalize();
+    attractionForce.multiply(0.05);
+    this.acc.add(attractionForce);
+  }
+
 ballClass.prototype.eric = function(v2){
   var d = this.loc.distance(v2.loc);
   if(d<175){
@@ -64,7 +84,7 @@ ballClass.prototype.eric = function(v2){
   }
 }
 /*
-ballClass.prototype.peter = function(v2){
+ballClass.prototype.peterOld = function(v2){
   var d = this.loc.distance(v2.loc);
   var xdist = d*Math.cos(this.loc.angleBetween(v2.loc));
   var ydist = d*Math.sin(this.loc.angleBetween(v2.loc));
