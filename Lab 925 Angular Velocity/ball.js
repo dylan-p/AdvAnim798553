@@ -24,13 +24,23 @@ ballClass.prototype.render = function(){
   ctx.lineWidth = '6';
   ctx.fillStyle = "rgb(" + this.c1 + "," + this.c2 + "," + this.c3 + ")";
 
+  // ctx.save();
+//  ctx.translate(this.loc.x, this.loc.y);
+  // ctx.rotate(this.vel.getDirection());
   ctx.beginPath();
-  ctx.moveTo(this.loc.x, this.loc.y);
-  ctx.lineTo(this.loc.x, this.loc.y+(this.radius));
-  ctx.lineTo(this.loc.x+(this.radius), this.loc.y);
+  ctx.moveTo(this.loc.x-(this.radius), this.loc.y-(this.radius));
+  ctx.lineTo(this.loc.x, this.loc.y+(this.radius*1.2));
+  ctx.moveTo(this.loc.x, this.loc.y+(this.radius*1.2));
+  ctx.lineTo(this.loc.x+(this.radius), this.loc.y-(this.radius));
+  ctx.moveTo(this.loc.x, this.loc.y-(this.radius));
+  ctx.lineTo(this.loc.x-(this.radius), this.loc.y-(this.radius*1.1));
+  ctx.moveTo(this.loc.x, this.loc.y-(this.radius*0.8));
+  ctx.lineTo(this.loc.x+(this.radius), this.loc.y-(this.radius*1.1));
   ctx.closePath();
+//  ctx.scale(1.1);
   ctx.fill();
   ctx.stroke();
+  // ctx.restore();
   for(let a = 0; a<numOrb; a++){
   this.orbiter[a].render();
   }

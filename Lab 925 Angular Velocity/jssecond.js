@@ -6,7 +6,7 @@ var loc = [[]];
 var vel = [[]];
 var accel = new JSVector(0, 0.098);
 */
-var numBal = 10;
+var numBal = 2;
 var numOrb = 10;
 var ball = [];
 var bnw;
