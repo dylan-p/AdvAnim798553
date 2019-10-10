@@ -87,8 +87,7 @@ JSVector.prototype.normalize = function(){
 // Limit the magnitude of this vector
 JSVector.prototype.limit = function(lim){
     if(this.getMagnitude() > lim){
-      this.x = lim.x;
-      this.y = lim.y;
+      this.setMagnitude(lim);
     }
 }
 

@@ -13,7 +13,6 @@ function ballClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, c1, c2, c3, orbRad,
   this.c3 = c3;
   this.orbiter = [];
   this.weer = weer;
-  console.log(this);
   for(let a = 0; a<numOrb; a++){
     this.orbiter[a] = new Orbiter(9, 0, 0, orbRad, ((2*Math.PI)/(numOrb)*a), this.loc, this);
   }
@@ -24,29 +23,45 @@ ballClass.prototype.render = function(){
   ctx.lineWidth = '6';
   ctx.fillStyle = "rgb(" + this.c1 + "," + this.c2 + "," + this.c3 + ")";
 
-  // ctx.save();
-//  ctx.translate(this.loc.x, this.loc.y);
-  // ctx.rotate(this.vel.getDirection());
+  ctx.save();
+  ctx.translate(this.loc.x, this.loc.y);
+  ctx.rotate(this.vel.getDirection()) - (Math.PI/2);
+
   ctx.beginPath();
-  ctx.moveTo(this.loc.x-(this.radius), this.loc.y-(this.radius));
-  ctx.lineTo(this.loc.x, this.loc.y+(this.radius*1.2));
-  ctx.moveTo(this.loc.x, this.loc.y+(this.radius*1.2));
-  ctx.lineTo(this.loc.x+(this.radius), this.loc.y-(this.radius));
-  ctx.moveTo(this.loc.x, this.loc.y-(this.radius));
-  ctx.lineTo(this.loc.x-(this.radius), this.loc.y-(this.radius*1.1));
-  ctx.moveTo(this.loc.x, this.loc.y-(this.radius*0.8));
-  ctx.lineTo(this.loc.x+(this.radius), this.loc.y-(this.radius*1.1));
+  // ctx.moveTo(this.loc.x-(this.radius), this.loc.y-(this.radius));
+  // ctx.lineTo(this.loc.x, this.loc.y+(this.radius));
+  // ctx.moveTo(this.loc.x, this.loc.y+(this.radius));
+  // ctx.lineTo(this.loc.x+(this.radius), this.loc.y-(this.radius));
+  // ctx.moveTo(this.loc.x, this.loc.y-(this.radius*0.75));
+  // ctx.lineTo(this.loc.x-(this.radius), this.loc.y-(this.radius));
+  // ctx.moveTo(this.loc.x, this.loc.y-(this.radius*0.75));
+  // ctx.lineTo(this.loc.x+(this.radius), this.loc.y-(this.radius));
+  ctx.moveTo(10-(this.radius), 15-(this.radius));
+  ctx.lineTo(10, 15+(this.radius));
+  ctx.moveTo(10, 15+(this.radius));
+  ctx.lineTo(10+(this.radius), 15-(this.radius));
+  ctx.moveTo(10, 15-(this.radius*0.75));
+  ctx.lineTo(10-(this.radius), 15-(this.radius));
+  ctx.moveTo(10, 15-(this.radius*0.75));
+  ctx.lineTo(10+(this.radius), 15-(this.radius));
   ctx.closePath();
-//  ctx.scale(1.1);
+
+//  ctx.scale(((Math.random()*3)+3), ((Math.random()*3)+3));
+
   ctx.fill();
   ctx.stroke();
-  // ctx.restore();
+
+  ctx.restore();
+
   for(let a = 0; a<numOrb; a++){
   this.orbiter[a].render();
   }
+
 }
 
+
 ballClass.prototype.update = function(){
+this.vel.limit(2);
   this.vel.add(this.acc);
   this.loc.add(this.vel);
   var kai = false;
