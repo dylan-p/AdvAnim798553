@@ -1,15 +1,11 @@
 window.onload = init;
 var ctx;
 var cnv;
-/*var radius = [];
-var loc = [[]];
-var vel = [[]];
-var accel = new JSVector(0, 0.098);
-*/
 var numBal = 2;
 var numOrb = 10;
 var ball = [];
 var bnw;
+var partSys;
 
 function init(){
   cnv = document.getElementById('cnv');
@@ -21,6 +17,7 @@ function init(){
  for(let a = 0; a<numBal; a++){
     ball[a] = new ballClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0.03, 50*Math.random()+15, 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 50+Math.random()*300, a);
  }
+  partSys = new ParticleClass(400, 400, 1, 1, 0, 0);
 animate();
 }
 
@@ -30,4 +27,5 @@ function animate(){
   for(let a = 0; a<numBal; a++){
     ball[a].run();
   }
+  partSys.run();
 }
