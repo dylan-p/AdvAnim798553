@@ -3,6 +3,7 @@ function ParticleClass(x, y, vx, vy, ax, ay){
   this.vel = new JSVector(vx, vy);
   this.acc = new JSVector(ax, ay);
   this.particles = [];
+  this.lifeSpanSpan = 690-500;
 }
 
   ParticleClass.prototype.render = function(){
@@ -44,4 +45,5 @@ ParticleClass.prototype.run = function(){
       this.particles[a].run();
     }
   }
+  this.lifeSpanSpan -=1;
 }

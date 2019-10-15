@@ -5,7 +5,7 @@ var numBal = 2;
 var numOrb = 10;
 var ball = [];
 var bnw;
-var partSys;
+var partSys = [];
 
 function init(){
   cnv = document.getElementById('cnv');
@@ -17,8 +17,15 @@ function init(){
  for(let a = 0; a<numBal; a++){
     ball[a] = new ballClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0.03, 50*Math.random()+15, 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 50+Math.random()*300, a);
  }
-  partSys = new ParticleClass(400, 400, 1, 1, 0, 0);
+  // partSys = new ParticleClass(400, 400, 1, 1, 0, 0);
+  cnv.addEventListener("click", mouseEvent);
 animate();
+}
+
+function mouseEvent(ev){
+  var evx = ev.offsetX;
+  var evy = ev.offsetY;
+  partSys.push(new ParticleClass(evx, evy, 5*Math.random()-3, 5*Math.random()-3, 0, 0.1*Math.random()));
 }
 
 function animate(){
@@ -27,5 +34,14 @@ function animate(){
   for(let a = 0; a<numBal; a++){
     ball[a].run();
   }
-  partSys.run();
+  if(partSys != null){
+    for(let a = 0; a<partSys.length; a++){
+      if(partSys[a].lifeSpanSpan <= 0){
+        partSys.splice(a, 1);
+      }
+      else{
+        partSys[a].run();
+      }
+    }
+  }
 }

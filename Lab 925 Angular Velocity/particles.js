@@ -12,14 +12,24 @@ Particles.prototype.render = function(){
   ctx.lineWidth = '10';
   ctx.fillStyle = 'rgb(211, 211, 211)';
 
+  ctx.save();
+  ctx.translate(this.loc.x, this.loc.y);
+
   ctx.beginPath();
-  ctx.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
+  ctx.moveTo(-9, -12);
+  ctx.lineTo(0, 15);
+  ctx.lineTo(9, -12);
+  ctx.lineTo(0, -3);
+  ctx.lineTo(-9, -12);
+
   ctx.fill();
   ctx.stroke();
   ctx.lineWidth = '1';
   ctx.strokeStyle = 'rgb(1, 1, 1)';
   ctx.stroke();
   ctx.closePath();
+
+  ctx.restore();
 }
 
 Particles.prototype.update = function(){

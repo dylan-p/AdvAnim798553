@@ -28,28 +28,25 @@ ballClass.prototype.render = function(){
   ctx.rotate(this.vel.getDirection()) - (Math.PI/2);
 
   ctx.beginPath();
-  // ctx.moveTo(this.loc.x-(this.radius), this.loc.y-(this.radius));
-  // ctx.lineTo(this.loc.x, this.loc.y+(this.radius));
-  // ctx.moveTo(this.loc.x, this.loc.y+(this.radius));
-  // ctx.lineTo(this.loc.x+(this.radius), this.loc.y-(this.radius));
-  // ctx.moveTo(this.loc.x, this.loc.y-(this.radius*0.75));
-  // ctx.lineTo(this.loc.x-(this.radius), this.loc.y-(this.radius));
-  // ctx.moveTo(this.loc.x, this.loc.y-(this.radius*0.75));
-  // ctx.lineTo(this.loc.x+(this.radius), this.loc.y-(this.radius));
-  ctx.moveTo(10-(this.radius), 15-(this.radius));
-  ctx.lineTo(10, 15+(this.radius));
-  ctx.moveTo(10, 15+(this.radius));
-  ctx.lineTo(10+(this.radius), 15-(this.radius));
-  ctx.moveTo(10, 15-(this.radius*0.75));
-  ctx.lineTo(10-(this.radius), 15-(this.radius));
-  ctx.moveTo(10, 15-(this.radius*0.75));
-  ctx.lineTo(10+(this.radius), 15-(this.radius));
+  // ctx.moveTo(10-(this.radius), 15-(this.radius));
+  // ctx.lineTo(10, 15+(this.radius));
+  // ctx.moveTo(10, 15+(this.radius));
+  // ctx.lineTo(10+(this.radius), 15-(this.radius));
+  // ctx.moveTo(10, 15-(this.radius*0.75));
+  // ctx.lineTo(10-(this.radius), 15-(this.radius));
+  // ctx.moveTo(10, 15-(this.radius*0.75));
+  // ctx.lineTo(10+(this.radius), 15-(this.radius));
+  ctx.moveTo(-27, -36);
+  ctx.lineTo(0, 45);
+  ctx.lineTo(27, -37);
+  ctx.lineTo(0, -9);
+  ctx.lineTo(-27, -36);
   ctx.closePath();
 
 //  ctx.scale(((Math.random()*3)+3), ((Math.random()*3)+3));
 
-  ctx.fill();
   ctx.stroke();
+  ctx.fill();
 
   ctx.restore();
 
