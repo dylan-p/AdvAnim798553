@@ -85,6 +85,8 @@ ballClass.prototype.update = function(){
   // }
 }
 
+
+//  this is completely useless
 ballClass.prototype.quentin = function(v2){
   var d = this.loc.distance(v2.loc);
   if(d<175){
@@ -94,14 +96,14 @@ ballClass.prototype.quentin = function(v2){
     this.acc.add(attractionForce);
   }
 }
-
+//  peter is the atract function for no reason whatsoever
 ballClass.prototype.peter = function(v2){
     var attractionForce = JSVector.subGetNew(v2.loc, this.loc);
     attractionForce.normalize();
     attractionForce.multiply(0.05);
     this.acc.add(attractionForce);
   }
-
+//  repell function for no reason whatsoever
 ballClass.prototype.eric = function(v2){
   var d = this.loc.distance(v2.loc);
   if(d<175){
