@@ -50,45 +50,19 @@ ballClass.prototype.render = function(){
   for(let a = 0; a<numOrb; a++){
     this.orbiter[a].render();
   }
-
 }
 
 
 ballClass.prototype.update = function(){
-
   this.vel.add(this.acc);
-  this.vel.limit(67);
+  this.vel.limit(2);
   this.loc.add(this.vel);
   for(let a = 0; a<this.orbiter.length; a++){
-    for(let b = 0; b<ball.length; b++){
-      if((this.orbiter[a].loc.distance(ball[b].loc) < 100) && this!==ball[b]){
-        this.orbiter[a].orbRad = Math.tanh((180-this.orbiter[a].loc.distance(ball[b].loc))/180)*90+50;
-        this.peter(ball[b]); //90;
-        break;
-      }else{
-        this.orbiter[a].orbRad = 60;
-      }
-    }
     this.orbiter[a].update();
   }
-  // var kai = false;
-  // for(let b = 0; b<numBal; b++){
-  //   if((this.loc.distance(ball[b].loc) < 200) && this!==ball[b]){
-  //     kai = true;
-  //     this.peter(ball[b]);
-  //   }
-  // }
-  // for(let a = 0; a<numOrb; a++){
-  //   this.orbiter[a].update();
-  //   if(kai == true){
-  //     this.orbiter[a].orbRad = 200;
-  //   }
-  //   if(kai == false){
-  //     this.orbiter[a].orbRad = 75;
-  //   }
-  // }
 }
 
+//Attracts 2 balls when they are within 175 pixels
 ballClass.prototype.quentin = function(v2){
   var d = this.loc.distance(v2.loc);
   if(d<175){
@@ -99,6 +73,7 @@ ballClass.prototype.quentin = function(v2){
   }
 }
 
+//Attracts 2 balls at any distance
 ballClass.prototype.peter = function(v2){
     var attractionForce = JSVector.subGetNew(v2.loc, this.loc);
     attractionForce.normalize();
@@ -106,6 +81,7 @@ ballClass.prototype.peter = function(v2){
     this.acc.add(attractionForce);
   }
 
+//Repels 2 balls within 175 pixels
 ballClass.prototype.eric = function(v2){
   var d = this.loc.distance(v2.loc);
   if(d<175){
@@ -115,17 +91,7 @@ ballClass.prototype.eric = function(v2){
     this.acc.add(attractionForce);
   }
 }
-/*
-ballClass.prototype.peterOld = function(v2){
-  var d = this.loc.distance(v2.loc);
-  var xdist = d*Math.cos(this.loc.angleBetween(v2.loc));
-  var ydist = d*Math.sin(this.loc.angleBetween(v2.loc));
-  if(d<175){
-    this.loc.x = this.loc.x + xdist;
-    this.loc.y = this.loc.y + ydist;
-  }
-}
-*/
+
 ballClass.prototype.checkEdges = function(){
   if((this.loc.x + this.radius > cnv.width && this.vel.x > 0) || (this.loc.x - this.radius < 0 && this.vel.x < 0)){
     this.vel.x = -this.vel.x;

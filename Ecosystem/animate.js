@@ -3,9 +3,11 @@ var ctx;
 var cnv;
 var numBal = 4;
 var numOrb = 10;
+var numPrey = 10;
 var ball = [];
 var bnw;
 var partSys = [];
+var prey = [];
 
 function init(){
   cnv = document.getElementById('cnv');
@@ -16,6 +18,9 @@ function init(){
   ctx = cnv.getContext('2d');
  for(let a = 0; a<numBal; a++){
     ball[a] = new ballClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0.03, 50*Math.random()+15, 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 255*Math.random(), 50+Math.random()*300, a);
+ }
+ for(let a = 0; a<numPrey; a++){
+    prey[a] = new preyClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0, 5);
  }
   // partSys = new ParticleClass(400, 400, 1, 1, 0, 0);
   cnv.addEventListener("click", mouseEvent);
@@ -33,6 +38,9 @@ function animate(){
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
   for(let a = 0; a<numBal; a++){
     ball[a].run();
+  }
+  for(let a = 0; a<numPrey; a++){
+    prey[a].run();
   }
   if(partSys != null){
     for(let a = 0; a<partSys.length; a++){

@@ -6,6 +6,8 @@ function Orbiter(radius, x, y, orbRad, angle, ballLoc, parentBal){
   this.ballLoc = ballLoc;
   this.inOut = 3;
   this.parent = parentBal;
+  this.extended = false;
+  this.hunting;
 }
 
 Orbiter.prototype.render = function(){
@@ -36,6 +38,23 @@ Orbiter.prototype.update = function(){
    //  if(this.orbRad>330){
    //      this.inOut = true;
    //    }
+   //Start of orbiter extension code
+   for(let b = 0; b<prey.length; b++){
+     if((this.loc.distance(prey[b].loc) < 100) && (prey[b].isHunted == false)){
+       this.orbRad = this.loc.distance(prey[b].loc);
+       prey[b].loc = this.loc;
+       prey[b].vel.setMagnitude = 0;
+       prey[b].isHunted = true;
+       this.hunting = b;
+     }
+     if((this.loc.distance(prey[b].loc) < 100) && (prey[b].isHunted == true) && (b == this.hunting)){
+       if(this.orbRad > 50){
+         this.orbRad-=1;
+         prey[b].loc = this.loc;
+       }
+     }
+   }
+     //End of orbiter extension code
     if(this.inOut == 1){
         this.orbRad+=6;
     }
