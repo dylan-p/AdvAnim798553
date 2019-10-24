@@ -7,7 +7,7 @@ function Orbiter(radius, x, y, orbRad, angle, ballLoc, parentBal){
   this.inOut = 3;
   this.parent = parentBal;
   this.extended = false;
-  this.hunting;
+  this.hunting; //determines which prey the orbiter is hunting
 }
 
 Orbiter.prototype.render = function(){
@@ -40,28 +40,33 @@ Orbiter.prototype.update = function(){
    //    }
    //Start of orbiter extension code
    for(let b = 0; b<prey.length; b++){
-     if((this.loc.distance(prey[b].loc) < 100) && (prey[b].isHunted == false)){
+     if((this.loc.distance(prey[b].loc) < 100) && (prey[b].isHunted === false)){
        this.orbRad = this.loc.distance(prey[b].loc);
        prey[b].loc = this.loc;
        prey[b].vel.setMagnitude = 0;
        prey[b].isHunted = true;
        this.hunting = b;
      }
-     if((this.loc.distance(prey[b].loc) < 100) && (prey[b].isHunted == true) && (b == this.hunting)){
+     if((this.loc.distance(prey[b].loc) < 100) && prey[b].isHunted && (b == this.hunting)){
        if(this.orbRad > 50){
          this.orbRad-=1;
          prey[b].loc = this.loc;
        }
+       this.lifeSpan -=1;
+     }
+     if((prey[b].lifeSpan <=0) && (b == this.hunting) && prey[b].isHunted){
+       this.hunting = -1;
+       prey[b].isHunted = false;
      }
    }
      //End of orbiter extension code
-    if(this.inOut == 1){
-        this.orbRad+=6;
-    }
-    if(this.inOut == 2){
-        this.orbRad-=4;
-    }
-    if(this.inOut == 3){
-        this.orbRad-=0;
-    }
+    // if(this.inOut == 1){
+    //     this.orbRad+=6;
+    // }
+    // if(this.inOut == 2){
+    //     this.orbRad-=4;
+    // }
+    // if(this.inOut == 3){
+    //     this.orbRad-=0;
+    // }
 }

@@ -4,6 +4,8 @@ function preyClass(x, y, vx, vy, ax, ay, radius){
   this.vel = new JSVector(vx, vy);
   this.acc = new JSVector(ax, ay);
   this.isHunted = false; //detects if it's been hunted before
+  this.lifeSpanMax = 300;
+  this.lifeSpan = this.lifeSpanMax;
 }
 
 preyClass.prototype.render = function(){
@@ -28,6 +30,12 @@ preyClass.prototype.update = function(){
   this.vel.limit(10);
   this.loc.add(this.vel);
   this.vel.add(this.acc);
+  if(this.isHunted){
+    this.lifeSpan-=1;
+  }
+  if(this.isHunted === false){
+    this.lifeSpan = this.lifeSpanMax;
+  }
 }
 
 preyClass.prototype.checkEdges = function(){

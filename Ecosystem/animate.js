@@ -40,6 +40,10 @@ function animate(){
     ball[a].run();
   }
   for(let a = 0; a<numPrey; a++){
+    if(prey[a].lifeSpan<=0){
+      prey.splice(a, 1);
+      prey.push(new preyClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0, 5));
+    }
     prey[a].run();
   }
   if(partSys != null){
