@@ -3,6 +3,7 @@ function Orbiter(radius, x, y, orbRad, angle, ballLoc, parentBal){
   this.loc = new JSVector(x, y);
   this.angle = angle;
   this.orbRad = 50;
+  this.orbRadMax = this.orbRad;
   this.ballLoc = ballLoc;
   this.inOut = 3;
   this.parent = parentBal;
@@ -40,6 +41,7 @@ Orbiter.prototype.update = function(){
    //    }
    //Start of orbiter extension code
    for(let b = 0; b<prey.length; b++){
+     //Sets initial hunted state, goes on the prey
      if((this.loc.distance(prey[b].loc) < 100) && (prey[b].isHunted === false)){
        this.orbRad = this.loc.distance(prey[b].loc);
        prey[b].loc = this.loc;
@@ -48,15 +50,18 @@ Orbiter.prototype.update = function(){
        this.hunting = b;
      }
      if((this.loc.distance(prey[b].loc) < 100) && prey[b].isHunted && (b == this.hunting)){
-       if(this.orbRad > 50){
+       //starts pulling the prey in
+       if(this.orbRad > this.orbRadMax){
          this.orbRad-=1;
          prey[b].loc = this.loc;
        }
        this.lifeSpan -=1;
      }
+     //Resets variables for orbiter so it can begin hunting again
      if((prey[b].lifeSpan <=0) && (b == this.hunting) && prey[b].isHunted){
        this.hunting = -1;
        prey[b].isHunted = false;
+       this.orbRad = this.orbRadMax;
      }
    }
      //End of orbiter extension code

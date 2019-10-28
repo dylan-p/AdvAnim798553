@@ -36,9 +36,11 @@ function mouseEvent(ev){
 function animate(){
   requestAnimationFrame(animate);
   ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  //Runs hunters
   for(let a = 0; a<numBal; a++){
     ball[a].run();
   }
+  //Runs prey, and kills/respawns them
   for(let a = 0; a<numPrey; a++){
     if(prey[a].lifeSpan<=0){
       prey.splice(a, 1);
@@ -46,6 +48,7 @@ function animate(){
     }
     prey[a].run();
   }
+  //Runs particle systems, and kills/respawns them
   if(partSys != null){
     for(let a = 0; a<partSys.length; a++){
       if(partSys[a].lifeSpanSpan <= 0){
