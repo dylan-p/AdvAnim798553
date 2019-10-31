@@ -1,13 +1,18 @@
-
+//
 function snakeClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, c1, c2, c3, orbRad, weer){
   this.radius = radius;
   this.loc = new JSVector(x, y);
   this.vel = new JSVector(vx, vy);
+  this.points = [];
+  this.points.push(new JSVector(x, y-10));
+  this.points.push(new JSVector(x, y-30));
+  this.points.push(new JSVector(x, y-50));
+  this.points.push(new JSVector(x, y-70));
   this.acc = new JSVector(0, 0);
-  this.other = new JSVector(cnv.width/2, cnv.height/2);
-  this.id = weer;
-
-  // color values
+//   this.other = new JSVector(cnv.width/2, cnv.height/2);
+//   this.id = weer;
+//
+//   // color values
   this.s1 = s1;
   this.s2 = s2;
   this.s3 = s3;
@@ -32,12 +37,12 @@ snakeClass.prototype.render = function(){
   ctx.rotate(this.vel.getDirection() - (Math.PI/2));
 
   ctx.beginPath();
-  ctx.moveTo(-27, -36);
-  ctx.lineTo(0, 45);
-  ctx.lineTo(27, -37);
-  ctx.lineTo(0, -9);
-  ctx.lineTo(-27, -36);
+  ctx.moveTo(0,0);
+  ctx.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
   ctx.closePath();
+  for(let a = 0; a<this.points.length; a++){
+    ctx.arc(this.points[a].x*0.2, this.points[a].y*0.2, 5, 0, Math.PI*2, true);
+  }
 
 //  ctx.scale(((Math.random()*3)+3), ((Math.random()*3)+3));
 
@@ -45,49 +50,19 @@ snakeClass.prototype.render = function(){
   ctx.fill();
 
   ctx.restore();
-  // 
+
   // for(let a = 0; a<numOrb; a++){
   //   this.orbiter[a].render();
   // }
 }
 
-
 snakeClass.prototype.update = function(){
   this.vel.add(this.acc);
   this.vel.limit(2);
   this.loc.add(this.vel);
-  for(let a = 0; a<this.orbiter.length; a++){
-    this.orbiter[a].update();
-  }
-}
-
-//Attracts 2 balls when they are within 175 pixels
-snakeClass.prototype.quentin = function(v2){
-  var d = this.loc.distance(v2.loc);
-  if(d<175){
-    var attractionForce = JSVector.subGetNew(v2.loc, this.loc);
-    attractionForce.normalize();
-    attractionForce.multiply(0.05);
-    this.acc.add(attractionForce);
-  }
-}
-
-//Attracts 2 balls at any distance
-snakeClass.prototype.peter = function(v2){
-    var attractionForce = JSVector.subGetNew(v2.loc, this.loc);
-    attractionForce.normalize();
-    attractionForce.multiply(0.05);
-    this.acc.add(attractionForce);
-  }
-
-//Repels 2 balls within 175 pixels
-snakeClass.prototype.eric = function(v2){
-  var d = this.loc.distance(v2.loc);
-  if(d<175){
-    var attractionForce = JSVector.subGetNew(this.loc, v2.loc);
-    attractionForce.normalize();
-    attractionForce.multiply(0.05);
-    this.acc.add(attractionForce);
+  for(let a = 0; a<this.points.length; a++){
+    this.points[a].x = this.loc.x;
+    this.points[a].y = this.loc.y;
   }
 }
 
@@ -100,7 +75,7 @@ snakeClass.prototype.checkEdges = function(){
     this.vel.y = -this.vel.y;
   }
 }
-
+//
 snakeClass.prototype.run = function(){
   this.update();
   this.render();
