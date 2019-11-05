@@ -1,16 +1,17 @@
-function tailClass(head, tailFront, tailLength){
+function tailClass(head, tailFront, tailLength, id){
   this.head = head;
   this.length = tailLength;
   this.loc = new JSVector(tailFront.loc.x, tailFront.loc.y+this.length);
   this.frontTail = tailFront;
   this.orbiter = [];
   this.distanceFront = this.loc.distance(this.frontTail.loc);
+  this.id = id+1;
 }
 
 tailClass.prototype.render = function(){
-  ctx.strokeStyle = "rgb(20, 160, 20)";
+  ctx.strokeStyle = "rgba(20, 160, 20, "+ (1/this.id) +")";
   ctx.lineWidth = '5';
-  ctx.fillStyle = "rgb(20, 160, 20)";
+  ctx.fillStyle = "rgba(20, 160, 201/"+ (1/this.id) +")";
   ctx.save();
   ctx.translate(this.loc.x, this.loc.y);
   ctx.rotate(this.getAngle() - (Math.PI/2));
