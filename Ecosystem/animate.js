@@ -4,10 +4,12 @@ var cnv;
 var numBal = 4;
 var numOrb = 10;
 var numPrey = 10;
+var numSnakes = 10;
 var ball = [];
 var bnw;
 var partSys = [];
 var prey = [];
+var snakes = [];
 
 function init(){
   cnv = document.getElementById('cnv');
@@ -21,6 +23,9 @@ function init(){
  }
  for(let a = 0; a<numPrey; a++){
     prey[a] = new preyClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0, 5);
+ }
+ for(let a = 0; a<numSnakes; a++){
+    snakes[a] = new snakeClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0.03, 50*Math.random()+15, 255*Math.random(), 255*Math.random(), 255*Math.random(),  50+Math.random()*300, a);
  }
   // partSys = new ParticleClass(400, 400, 1, 1, 0, 0);
   cnv.addEventListener("click", mouseEvent);
@@ -39,6 +44,10 @@ function animate(){
   //Runs hunters
   for(let a = 0; a<numBal; a++){
     ball[a].run();
+  }
+  //Runs snakes
+  for(let a = 0; a<numSnakes; a++){
+    snakes[a].run();
   }
   //Runs prey, and kills/respawns them
   for(let a = 0; a<numPrey; a++){
