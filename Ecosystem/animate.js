@@ -45,10 +45,6 @@ function animate(){
   for(let a = 0; a<numBal; a++){
     ball[a].run();
   }
-  //Runs snakes
-  for(let a = 0; a<numSnakes; a++){
-    snakes[a].run();
-  }
   //Runs prey, and kills/respawns them
   for(let a = 0; a<numPrey; a++){
     if(prey[a].lifeSpan<=0){
@@ -56,6 +52,10 @@ function animate(){
       prey.push(new preyClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0, 5));
     }
     prey[a].run();
+  }
+  //runs snakes
+  for(let a = 0; a<numSnakes; a++){
+    snakes[a].run();
   }
   //Runs particle systems, and kills/respawns them
   if(partSys != null){

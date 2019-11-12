@@ -15,7 +15,7 @@ function snakeClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, orbRad, weer){
   this.c3 = this.s3*0.8;
   // color values
   this.id = weer;
-  this.tails[0] = new tailClass(this, this, this.radius*0.1, 0);
+  this.tails[0] = new tailClass(this, this, this.radius*0.1, 0)
   for(let a = 1; a<35; a++){
       this.tails[a] = new tailClass(this, this.tails[a-1], this.tails[a-1].length, a);
   }
