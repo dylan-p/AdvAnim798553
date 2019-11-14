@@ -22,7 +22,7 @@ boidClass.prototype.render = function(){
 boidClass.prototype.update = function(){
   this.seperate();
   this.align();
-  // this.cohese();
+  this.cohese();
   this.vel.limit(2);
   this.vel.add(this.acc);
   this.loc.add(this.vel);
@@ -57,7 +57,7 @@ boidClass.prototype.align = function(){
     avgVec.divide(numClose);
     avgVec.normalize();
     avgVec.sub(this.vel);
-    avgVec.limit(0.005);
+    avgVec.limit(0.05);
     this.acc.add(avgVec);
   }
 }
@@ -66,23 +66,26 @@ boidClass.prototype.cohese = function(){
   var avgLoc = new JSVector(0, 0);
   var numClose = 0;
   for(let a = 0; a<flock.length; a++){
-    if((flock[a] !== this) && (this.loc.distance(flock[a].loc)<60)){
+    if((flock[a] !== this) && (this.loc.distance(flock[a].loc)<60) && ((this.loc.distance(flock[a].loc)>20))){
       avgLoc.add(flock[a].loc);
       numClose++;
     }
   }
   if(numClose>0){
-    avgLoc.divide(numClose);
-    this.loc.add(avgLoc);
+    this.seek(avgLoc);
   }
 }
 
-boidClass.prototype.peter = function(v2){
-    var attractionForce = JSVector.subGetNew(v2.loc, this.loc);
-    attractionForce.normalize();
-    attractionForce.multiply(0.05);
-    this.acc.add(attractionForce);
-  }
+boidClass.prototype.seek = function(v2){
+  var desired = JSVector.subGetNew(v2, this.loc);  // A vector pointing from the position to the target
+    // Normalize desired and scale to maximum speed
+    desired.normalize();
+    desired.multiply(0.05);
+    // Steering = Desired minus Velocity
+    var steer = JSVector.subGetNew(desired, this.vel);
+    steer.limit(0.05);  // Limit to maximum steering force
+    this.acc.add(steer);
+}
 
 boidClass.prototype.checkEdges = function(){
   if((this.loc.x + this.radius > cnv.width && this.vel.x > 0) || (this.loc.x - this.radius < 0 && this.vel.x < 0)){
