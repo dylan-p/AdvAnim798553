@@ -5,7 +5,7 @@ function boidClass(x, y, vx, vy ,weer){
   this.mag = this.vel.getMagnitude();
   this.id = weer;
   this.maxSpeed = 5;
-  this.maxAcc = 0.05;
+  this.maxAcc = 0.3;
 }
 
 boidClass.prototype.render = function(){
@@ -41,19 +41,24 @@ boidClass.prototype.update = function(){
 
 boidClass.prototype.seperate = function(){
   var numClose = 0;
+  var addVec = new JSVector(0, 0);
   for(let a = 0; a<flock.length; a++){
-    if((flock[a] !== this) && (this.loc.distance(flock[a].loc)<20)){
-      var addVec = new JSVector.subGetNew(this.loc, flock[a].loc);
-      addVec.divide(this.loc.distance(flock[a].loc));
+    if((flock[a] !== this) && (this.loc.distance(flock[a].loc)<(20*sep))){
+      var rando = new JSVector.subGetNew(this.loc, flock[a].loc);
+      rando.normalize();
+      rando.divide(this.loc.distance(flock[a].loc));
+      addVec.add(rando);
       numClose++;
     }
   }
   if(numClose>0){
     addVec.normalize();
     addVec.divide(numClose);
-    addVec.multiply(sep*0.25);
-    addVec.limit(this.maxAcc);
-    this.vel.add(addVec);
+    addVec.multiply(this.maxSpeed);
+    var steer = new JSVector.subGetNew(addVec, this.vel);
+    steer.limit(this.maxAcc);
+    steer.multiply(5);
+    this.acc.add(steer);
   }
 }
 
@@ -61,7 +66,7 @@ boidClass.prototype.align = function(){
   var avgVec = new JSVector(0, 0);
   var numClose = 0;
   for(let a = 0; a<flock.length; a++){
-    if((flock[a] !== this) && (this.loc.distance(flock[a].loc)<60) && (this.loc.distance(flock[a].loc)>20)){
+    if((flock[a] !== this) && (this.loc.distance(flock[a].loc)<(60*ali))){
       avgVec.add(flock[a].vel);
       numClose++;
     }
@@ -69,10 +74,10 @@ boidClass.prototype.align = function(){
   if(numClose>0){
     avgVec.divide(numClose);
     avgVec.normalize();
-    // avgVec.sub(this.vel);
-    avgVec.multiply(ali*0.7);
-    avgVec.limit(this.maxAcc);
-    this.acc.add(avgVec);
+    avgVec.multiply(this.maxSpeed);
+    var steer = JSVector.subGetNew(avgVec, this.vel);
+    steer.limit(this.maxAcc);
+    this.acc.add(steer);
   }
 }
 
@@ -96,6 +101,7 @@ boidClass.prototype.seek = function(v2){
   desired.normalize();
   // Steering = Desired minus Velocity
   var steer = JSVector.subGetNew(desired, this.vel);
+  steer.normalize();
   steer.limit(this.maxAcc);
   steer.multiply(coh*0.25);
   this.acc.add(steer);

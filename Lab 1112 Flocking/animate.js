@@ -3,6 +3,9 @@ var ctx;
 var cnv;
 var numFlock = 50;
 var flock = [];
+var sep = 0;
+var ali = 0;
+var coh = 0;
 
 function init(){
   cnv = document.getElementById('cnv');
@@ -24,7 +27,7 @@ function init(){
   document.getElementById("coh").step="any";
 
  for(let a = 0; a<numFlock; a++){
-    flock[a] = new boidClass(Math.random()*2000, Math.random()*750, Math.random()*3, a);
+    flock[a] = new boidClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, a);
  }
 animate();
 }
