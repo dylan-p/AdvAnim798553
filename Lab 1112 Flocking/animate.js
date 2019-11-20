@@ -1,7 +1,7 @@
 window.onload = init;
 var ctx;
 var cnv;
-var numFlock = 50;
+var numFlock = 500;
 var flock = [];
 var sep = 0;
 var ali = 0;
@@ -17,17 +17,20 @@ function init(){
   document.getElementById("sep").min=.000001;
   document.getElementById("sep").max=10;
   document.getElementById("sep").step="any";
+  document.getElementById("sep").value=5;
 
   document.getElementById("align").min=.000001;
   document.getElementById("align").max=10;
   document.getElementById("align").step="any";
+  document.getElementById("align").value=5;
 
   document.getElementById("coh").min=.000001;
   document.getElementById("coh").max=10;
   document.getElementById("coh").step="any";
+  document.getElementById("coh").value=5;
 
  for(let a = 0; a<numFlock; a++){
-    flock[a] = new boidClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, a);
+    flock[a] = new boidClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3-1.5, Math.random()*3-1.5, a);
  }
 animate();
 }
@@ -39,7 +42,7 @@ function animate(){
   ali = document.getElementById("align").value;
   coh = document.getElementById("coh").value;
 
-  //Runs hunters
+  //Runs boids
   for(let a = 0; a<numFlock; a++){
     flock[a].run();
   }

@@ -6,17 +6,29 @@ function preyClass(x, y, vx, vy, ax, ay, radius){
   this.isHunted = false; //detects if it's been hunted before
   this.lifeSpanMax = 300;
   this.lifeSpan = this.lifeSpanMax;
+  this.maxSpeed = 3;
+  this.maxForce = 0.1;
 }
 
 preyClass.prototype.render = function(){
-  ctx.strokeStyle = 'rgb(85, 107, 47)';
-  ctx.lineWidth = '10';
-  ctx.fillStyle = 'rgb(255, 140, 0)';
+  ctx.strokeStyle = "rgb(0, 0, 0)";
+  ctx.lineWidth = '5';
+  ctx.fillStyle = "rgb(" + 0 + ", " + ((this.loc.y*0.45)+30) + ", " + ((this.loc.x*0.165)+30) + ")";
+  ctx.save();
+  ctx.translate(this.loc.x, this.loc.y);
+  ctx.rotate(this.vel.getDirection() - (Math.PI/2));
 
   ctx.beginPath();
-  ctx.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
-  ctx.fill();
+  ctx.moveTo(-9, -12);
+  ctx.lineTo(0, 15);
+  ctx.lineTo(9, -12);
+  ctx.lineTo(0, -3);
+  ctx.lineTo(-9, -12);
+  ctx.closePath();
+
   ctx.stroke();
+  ctx.fill();
+  ctx.restore();
 }
 //Attracts it towards a ball
 preyClass.prototype.peter = function(v2){
@@ -27,9 +39,10 @@ preyClass.prototype.peter = function(v2){
   }
 
 preyClass.prototype.update = function(){
-  this.vel.limit(10);
-  this.loc.add(this.vel);
   this.vel.add(this.acc);
+  this.loc.add(this.vel);
+  this.vel.limit(this.maxspeed);
+  this.acc.multiply(0);
   //Makes the lifespan of the prey work, and reset
   if(this.isHunted){
     this.lifeSpan-=1;
@@ -38,18 +51,129 @@ preyClass.prototype.update = function(){
     this.lifeSpan = this.lifeSpanMax;
   }
 }
+preyClass.prototype.applyForce = function(force){
+  this.acc.add(force);
+}
 
-preyClass.prototype.checkEdges = function(){
-  if((this.loc.x + this.radius > cnv.width && this.vel.x > 0) || (this.loc.x - this.radius < 0 && this.vel.x < 0)){
-    this.vel.x = -this.vel.x;
+preyClass.prototype.flockFunc = function(){
+  let sepForce = this.seperate();
+  let aliForce = this.align();
+  let cohForce = this.cohese();
+  sepForce.multiply(2.5);
+  aliForce.multiply(1.0);
+  cohForce.multiply(1.0);
+
+  this.applyForce(sepForce);
+  this.applyForce(aliForce);
+  this.applyForce(cohForce);
+}
+
+preyClass.prototype.seperate = function(){
+  var desiredSep = 25.0;
+  var numClose = 0;
+  var steer = new JSVector(0, 0);
+  for (let a = 0; a < prey.length; a++) {
+    let d = this.loc.distance(prey[a].loc);
+    if ((d > 0) && (d < desiredSep)) {
+      var diff = JSVector.subGetNew(this.loc, prey[a].loc);
+      diff.normalize();
+      diff.divide(d);
+      steer.add(diff);
+      numClose++;
+    }
+  }
+  if (numClose > 0) {
+    steer.divide(numClose);
+  }
+  if (steer.getMagnitude() > 0) {
+    steer.normalize();
+    steer.multiply(sep);
+    steer.sub(this.vel);
+    steer.limit(this.maxForce);
+  }
+    return steer;
   }
 
-  if((this.loc.y + this.radius > cnv.height && this.vel.y > 0) || (this.loc.y - this.radius < 0 && this.vel.y < 0)){
-    this.vel.y = -this.vel.y;
+preyClass.prototype.align = function(){
+  var neighbordist = 50;
+  var avgVec = new JSVector(0, 0);
+  var numClose = 0;
+  for (let a = 0; a < prey.length; a++) {
+    let d = this.loc.distance(prey[a].loc);
+    if ((d > 0) && (d < neighbordist)) {
+      avgVec.add(prey[a].vel);
+      numClose++;
+    }
+  }
+  if (numClose > 0) {
+    avgVec.divide(numClose);
+    avgVec.normalize();
+    avgVec.multiply(ali);
+    let steer = JSVector.subGetNew(avgVec, this.vel);
+    steer.limit(this.maxForce);
+    return steer;
+  } else {
+    return new JSVector(0, 0);
   }
 }
 
+preyClass.prototype.cohese = function(){
+  var neighbordist = 50;
+  var avgLoc = new JSVector(0, 0);
+  var numClose = 0;
+  for(let a = 0; a < prey.length; a++){
+    let d = this.loc.distance(prey[a].loc);
+    if((d > 0) && (d < neighbordist)){
+      avgLoc.add(prey[a].loc);
+      numClose++;
+    }
+  }
+  if(numClose > 0){
+    avgLoc.divide(numClose);
+    return this.seek(avgLoc);
+  } else {
+    return new JSVector(0,0);
+  }
+}
+
+preyClass.prototype.seek = function(target){
+  var desired = JSVector.subGetNew(target, this.loc);
+  desired.normalize();
+  desired.multiply(coh);
+  var steer = JSVector.subGetNew(desired, this.vel);
+  steer.limit(this.maxForce);
+  return steer;
+}
+
+preyClass.prototype.checkEdges = function(){
+  var desire;
+  if(this.loc.x < 40){
+    desire = new JSVector(this.maxSpeed, this.vel.y);
+    var steer = JSVector.subGetNew(desire, this.vel);
+    steer.limit(this.maxForce*5);
+    this.acc.add(steer);
+  }
+  else if(this.loc.x > cnv.width - 40){
+    desire = new JSVector(-this.maxSpeed, this.vel.y);
+    var steer = JSVector.subGetNew(desire, this.vel);
+    steer.limit(this.maxForce*5);
+    this.acc.add(steer);
+  }
+  if(this.loc.y < 40){
+    desire = new JSVector(this.vel.x, this.maxSpeed);
+    var steer = JSVector.subGetNew(desire, this.vel);
+    steer.limit(this.maxForce*5);
+    this.acc.add(steer);
+  }
+  else if(this.loc.y > cnv.height - 40){
+    desire = new JSVector(this.vel.x, -this.maxSpeed);
+    var steer = JSVector.subGetNew(desire, this.vel);
+    steer.limit(this.maxForce*5);
+    this.acc.add(steer);
+  }
+}
 preyClass.prototype.run = function(){
+  this.flockFunc();
   this.update();
   this.render();
   this.checkEdges();

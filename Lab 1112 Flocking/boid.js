@@ -1,18 +1,19 @@
-function boidClass(x, y, vx, vy ,weer){
+function boidClass(x, y, vx, vy, weer){
   this.loc = new JSVector(x, y);
   this.vel = new JSVector(vx, vy);
   this.acc = new JSVector(0, 0);
   this.mag = this.vel.getMagnitude();
   this.id = weer;
-  this.maxSpeed = 4;
+  this.maxSpeed = 3;
   this.maxForce = 0.1;
+  // this.color = 90;
+  // this.colorUp = true;
 }
 
 boidClass.prototype.render = function(){
   ctx.strokeStyle = "rgb(0, 0, 0)";
   ctx.lineWidth = '5';
-  ctx.fillStyle = "rgb(255, 255, 255)";
-  //makes the head
+  ctx.fillStyle = "rgb(" + 0 + ", " + ((this.loc.y*0.45)+30) + ", " + ((this.loc.x*0.165)+30) + ")";
   ctx.save();
   ctx.translate(this.loc.x, this.loc.y);
   ctx.rotate(this.vel.getDirection() - (Math.PI/2));
@@ -28,6 +29,15 @@ boidClass.prototype.render = function(){
   ctx.stroke();
   ctx.fill();
   ctx.restore();
+  // if(this.color < 90){
+  //   this.colorUp = true;
+  // }if(this.color > 254){
+  //   this.colorUp = false;
+  // }if(this.colorUp){
+  //   this.color++;
+  // }else{
+  //   this.color--;
+  // }
 }
 
 boidClass.prototype.update = function() {
@@ -45,7 +55,7 @@ boidClass.prototype.flockFunc = function(){
   let sepForce = this.seperate();
   let aliForce = this.align();
   let cohForce = this.cohese();
-  sepForce.multiply(1.5);
+  sepForce.multiply(2.5);
   aliForce.multiply(1.0);
   cohForce.multiply(1.0);
 
@@ -122,8 +132,6 @@ boidClass.prototype.cohese = function(){
   }
 }
 
-
-
 boidClass.prototype.seek = function(target){
   var desired = JSVector.subGetNew(target, this.loc);
   desired.normalize();
@@ -138,25 +146,25 @@ boidClass.prototype.checkEdges = function(){
   if(this.loc.x < 40){
     desire = new JSVector(this.maxSpeed, this.vel.y);
     var steer = JSVector.subGetNew(desire, this.vel);
-    steer.limit(this.maxAcc);
+    steer.limit(this.maxForce*5);
     this.acc.add(steer);
   }
   else if(this.loc.x > cnv.width - 40){
     desire = new JSVector(-this.maxSpeed, this.vel.y);
     var steer = JSVector.subGetNew(desire, this.vel);
-    steer.limit(this.maxAcc);
+    steer.limit(this.maxForce*5);
     this.acc.add(steer);
   }
   if(this.loc.y < 40){
     desire = new JSVector(this.vel.x, this.maxSpeed);
     var steer = JSVector.subGetNew(desire, this.vel);
-    steer.limit(this.maxAcc);
+    steer.limit(this.maxForce*5);
     this.acc.add(steer);
   }
   else if(this.loc.y > cnv.height - 40){
     desire = new JSVector(this.vel.x, -this.maxSpeed);
     var steer = JSVector.subGetNew(desire, this.vel);
-    steer.limit(this.maxAcc);
+    steer.limit(this.maxForce*5);
     this.acc.add(steer);
   }
 }

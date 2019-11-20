@@ -1,19 +1,20 @@
 
-function ballClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, c1, c2, c3, orbRad, weer){
+function ballClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, orbRad, weer){
   this.radius = radius;
   this.loc = new JSVector(x, y);
   this.vel = new JSVector(vx, vy);
   this.acc = new JSVector(0, 0);
   this.other = new JSVector(cnv.width/2, cnv.height/2);
   this.id = weer;
+  this.isHuntingNow = true;
 
   // color values
   this.s1 = s1;
   this.s2 = s2;
   this.s3 = s3;
-  this.c1 = c1;
-  this.c2 = c2;
-  this.c3 = c3;
+  this.c1 = this.s1*0.8;
+  this.c2 = this.s2*0.8;
+  this.c3 = this.s3*0.8;
   // color values
   this.orbiter = [];
   this.weer = weer;
@@ -51,14 +52,22 @@ ballClass.prototype.render = function(){
   }
 }
 
-
 ballClass.prototype.update = function(){
   this.vel.add(this.acc);
   this.vel.limit(2);
   this.loc.add(this.vel);
   for(let a = 0; a<this.orbiter.length; a++){
     this.orbiter[a].update();
+    if(this.orbiter[a].hasPrey){
+      this.isHuntingNow = false;
+    }
   }
+  if(this.isHuntingNow){
+    for(let a = 0; a<this.orbiter.length; a++){
+      this.orbiter[a].huntFunc();
+    }
+  }
+  this.isHuntingNow = true;
 }
 
 //Attracts 2 balls when they are within 175 pixels
