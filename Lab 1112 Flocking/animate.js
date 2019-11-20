@@ -15,15 +15,15 @@ function init(){
   cnv.style.backgroundColor = 'rgba(0,44,55, 0.1575)';
   ctx = cnv.getContext('2d');
   document.getElementById("sep").min=.000001;
-  document.getElementById("sep").max=2;
+  document.getElementById("sep").max=10;
   document.getElementById("sep").step="any";
 
   document.getElementById("align").min=.000001;
-  document.getElementById("align").max=2;
+  document.getElementById("align").max=10;
   document.getElementById("align").step="any";
 
   document.getElementById("coh").min=.000001;
-  document.getElementById("coh").max=2;
+  document.getElementById("coh").max=10;
   document.getElementById("coh").step="any";
 
  for(let a = 0; a<numFlock; a++){
