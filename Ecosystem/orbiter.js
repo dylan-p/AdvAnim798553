@@ -13,16 +13,16 @@ function Orbiter(radius, x, y, orbRad, angle, ballLoc, parentBal){
 }
 
 Orbiter.prototype.render = function(){
-  ctx.fillStyle = "rgb(" + this.parent.c1 + "," + this.parent.c2 + "," + this.parent.c3 + ")";
+  ctx.fillStyle = "rgb(" + this.parent.s1 + "," + this.parent.s2 + "," + this.parent.s3 + ")";
   ctx.lineWidth = '10';
-  ctx.fillStyle = "rgb(" + this.parent.c1 + "," + this.parent.c2 + "," + this.parent.c3 + ")";
+  ctx.fillStyle = "rgb(" + this.parent.s1 + "," + this.parent.s2 + "," + this.parent.s3 + ")";
 
   ctx.beginPath();
   ctx.arc(this.loc.x, this.loc.y, this.radius, 0, Math.PI*2, true);
   ctx.fill();
   ctx.stroke();
   ctx.lineWidth = '1';
-  ctx.strokeStyle = "rgb(" + this.parent.c1 + "," + this.parent.c2 + "," + this.parent.c3 + ")";;
+  ctx.strokeStyle = "rgb(" + this.parent.s1 + "," + this.parent.s2 + "," + this.parent.s3 + ")";;
   ctx.moveTo(this.ballLoc.x, this.ballLoc.y);
   ctx.lineTo(this.loc.x, this.loc.y);
   ctx.stroke();
@@ -55,7 +55,8 @@ Orbiter.prototype.huntFunc = function(){
       prey[b].isHunted = false;
       this.orbRad = this.orbRadMax;
       this.hasPrey = false;
-      this.parent.isHuntingNow = true;
+      partSys.push(new ParticleClass(this.loc.x, this.loc.y, 0.3*Math.random()-0.15, 0.3*Math.random()-0.15, 0, 0));
+      // this.parent.isHuntingNow = true;
     }
   }
 }

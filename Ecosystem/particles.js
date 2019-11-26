@@ -16,11 +16,11 @@ Particles.prototype.render = function(){
   ctx.translate(this.loc.x, this.loc.y);
 
   ctx.beginPath();
-  ctx.moveTo(-9, -12);
-  ctx.lineTo(0, 15);
-  ctx.lineTo(9, -12);
-  ctx.lineTo(0, -3);
-  ctx.lineTo(-9, -12);
+  ctx.moveTo(-3, -4);
+  ctx.lineTo(0, 5);
+  ctx.lineTo(3, -4);
+  ctx.lineTo(0, -1);
+  ctx.lineTo(-3, -4);
 
   ctx.fill();
   ctx.stroke();

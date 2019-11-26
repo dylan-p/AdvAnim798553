@@ -1,5 +1,5 @@
 
-function ballClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, orbRad, weer){
+function ballClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, orbRad, weer, numOrbPass){
   this.radius = radius;
   this.loc = new JSVector(x, y);
   this.vel = new JSVector(vx, vy);
@@ -7,6 +7,7 @@ function ballClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, orbRad, weer){
   this.other = new JSVector(cnv.width/2, cnv.height/2);
   this.id = weer;
   this.isHuntingNow = true;
+  this.numOrb = numOrbPass;
 
   // color values
   this.s1 = s1;
@@ -18,8 +19,8 @@ function ballClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, orbRad, weer){
   // color values
   this.orbiter = [];
   this.weer = weer;
-  for(let a = 0; a<numOrb; a++){
-      this.orbiter[a] = new Orbiter(9, 0, 0, orbRad, ((2*Math.PI)/(numOrb)*a), this.loc, this);
+  for(let a = 0; a<this.numOrb; a++){
+      this.orbiter[a] = new Orbiter(9, 0, 0, orbRad, ((2*Math.PI)/(this.numOrb)*a), this.loc, this);
   }
 }
 
@@ -47,7 +48,7 @@ ballClass.prototype.render = function(){
 
   ctx.restore();
 
-  for(let a = 0; a<numOrb; a++){
+  for(let a = 0; a<this.numOrb; a++){
     this.orbiter[a].render();
   }
 }
@@ -58,16 +59,16 @@ ballClass.prototype.update = function(){
   this.loc.add(this.vel);
   for(let a = 0; a<this.orbiter.length; a++){
     this.orbiter[a].update();
-    if(this.orbiter[a].hasPrey){
-      this.isHuntingNow = false;
-    }
+  //   if(this.orbiter[a].hasPrey){
+  //     this.isHuntingNow = false;
+  //   }
   }
-  if(this.isHuntingNow){
+  // if(this.isHuntingNow){
     for(let a = 0; a<this.orbiter.length; a++){
       this.orbiter[a].huntFunc();
     }
-  }
-  this.isHuntingNow = true;
+  // }
+  // this.isHuntingNow = true;
 }
 
 //Attracts 2 balls when they are within 175 pixels

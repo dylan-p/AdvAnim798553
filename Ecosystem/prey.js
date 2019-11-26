@@ -74,7 +74,7 @@ preyClass.prototype.seperate = function(){
   var steer = new JSVector(0, 0);
   for (let a = 0; a < prey.length; a++) {
     let d = this.loc.distance(prey[a].loc);
-    if ((d > 0) && (d < desiredSep)) {
+    if ((d > 0) && (d < desiredSep) && (prey[a].isHunted == false)) {
       var diff = JSVector.subGetNew(this.loc, prey[a].loc);
       diff.normalize();
       diff.divide(d);
@@ -100,7 +100,7 @@ preyClass.prototype.align = function(){
   var numClose = 0;
   for (let a = 0; a < prey.length; a++) {
     let d = this.loc.distance(prey[a].loc);
-    if ((d > 0) && (d < neighbordist)) {
+    if ((d > 0) && (d < neighbordist) && (prey[a].isHunted == false)) {
       avgVec.add(prey[a].vel);
       numClose++;
     }
@@ -123,7 +123,7 @@ preyClass.prototype.cohese = function(){
   var numClose = 0;
   for(let a = 0; a < prey.length; a++){
     let d = this.loc.distance(prey[a].loc);
-    if((d > 0) && (d < neighbordist)){
+    if((d > 0) && (d < neighbordist) && (prey[a].isHunted == false)){
       avgLoc.add(prey[a].loc);
       numClose++;
     }

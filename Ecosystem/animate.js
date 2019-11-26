@@ -2,7 +2,6 @@ window.onload = init;
 var ctx;
 var cnv;
 var numBal = 4; //4
-var numOrb = 10; //10
 var numPrey = 50; //50
 var numSnakes = 4; //4
 var sep = 0;
@@ -38,7 +37,7 @@ function init(){
   document.getElementById("coh").value=5;
 //creates creatures
  for(let a = 0; a<numBal; a++){
-    ball[a] = new ballClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, -Math.random()*3, 0, 0.03, 50*Math.random()+15, 255*Math.random(), 255*Math.random(), 255*Math.random(), 50+Math.random()*300, a);
+    ball[a] = new ballClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, -Math.random()*3, 0, 0.03, 50*Math.random()+15, 255*Math.random(), 255*Math.random(), 255*Math.random(), 50+Math.random()*300, a, 10);
  }
  for(let a = 0; a<numPrey; a++){
     prey[a] = new preyClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, -Math.random()*3, 0, 0, 5);

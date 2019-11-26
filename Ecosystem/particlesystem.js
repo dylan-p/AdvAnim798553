@@ -4,15 +4,16 @@ function ParticleClass(x, y, vx, vy, ax, ay){
   this.acc = new JSVector(ax, ay);
   this.particles = [];
   this.lifeSpanSpan = 690-500;
+  this.makeNew = 0;
 }
 
   ParticleClass.prototype.render = function(){
-    ctx.strokeStyle = 'rgb(200, 0, 0)';
+    ctx.strokeStyle = 'rgb(150, 75, 0)';
     ctx.lineWidth = '10';
-    ctx.fillStyle = 'rgb(200, 0, 0)';
+    ctx.fillStyle = 'rgb(150, 75, 0)';
 
     ctx.beginPath();
-    ctx.arc(this.loc.x, this.loc.y, 40, 0, Math.PI*2, true);
+    ctx.arc(this.loc.x, this.loc.y, 10, 0, Math.PI*2, true);
     ctx.fill();
     ctx.stroke();
  }
@@ -36,14 +37,20 @@ ParticleClass.prototype.run = function(){
   this.update();
   this.render();
   this.checkEdges();
-  this.particles.push(new Particles(this.loc.x, this.loc.y, 6*Math.random()-3, 6*Math.random()-3, 1*Math.random()-0.5, 1*Math.random()-0.5, 20*Math.random()+2, 30));
-  for(let a = this.particles.length-1; a>=0; a--){
-    if(this.particles[a].lifeSpan <= 0){
-      this.particles.splice(a, 1);
-    }
-    else{
-      this.particles[a].run();
-    }
-  }
+  // if(this.makeNew == 0){
+  //     this.particles.push(new Particles(this.loc.x, this.loc.y, 6*Math.random()-3, 6*Math.random()-3, 1*Math.random()-0.5, 1*Math.random()-0.5, 20*Math.random()+2, 30));
+  // }
+  // this.makeNew++;
+  // if(this.makeNew > 9){
+  //   this.makeNew = 0;
+  // }
+  // for(let a = this.particles.length-1; a>=0; a--){
+  //   if(this.particles[a].lifeSpan <= 0){
+  //     this.particles.splice(a, 1);
+  //   }
+  //   else{
+  //     this.particles[a].run();
+  //   }
+  // }
   this.lifeSpanSpan -=1;
 }
