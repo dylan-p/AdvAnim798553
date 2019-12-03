@@ -3,7 +3,7 @@ function snakeClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, orbRad, weer){
   this.loc = new JSVector(x, y);
   this.vel = new JSVector(vx, vy);
   this.tails = [];
-  this.acc = new JSVector(0, 0.03);
+  this.acc = new JSVector(0, 0);
   this.mag = this.vel.getMagnitude();
   this.newVector = new JSVector(vx, vy);
 //   // color values
@@ -33,9 +33,57 @@ snakeClass.prototype.render = function(){
   //makes the tail
 }
 
+snakeClass.prototype.huntFunc = function(){
+  for(let b = 0; b<prey.length; b++){
+    //Sets initial hunted state, goes on the prey
+    if((this.loc.distance(prey[b].loc) < this.radius) && (prey[b].isHunted === false)){
+      prey[b].lifeSpan = -100;
+      partSys.push(new ParticleClass(this.loc.x, this.loc.y, 0.3*Math.random()-0.15, 0.3*Math.random()-0.15, 0, 0));
+      if(this.tails.length < 55){
+        this.tails.push(new tailClass(this, this.tails[this.tails.length-1], this.tails[this.tails.length-1].length, this.tails.length));
+      }
+      if(this.tails.length >= 55){
+        this.tails.splice(35, 19);
+        this.radius +=4;
+      }
+    }
+  }
+  let goToForce = this.goToPrey();
+  goToForce.multiply(0.5); //1.0
+  this.acc.add(goToForce);
+}
+
+snakeClass.prototype.goToPrey = function(){
+  var neighbordist = 150;
+  var avgLoc = new JSVector(0, 0);
+  var numClose = 0;
+  for(let a = 0; a < prey.length; a++){
+    let d = this.loc.distance(prey[a].loc);
+    if((d > 0) && (d < neighbordist) && (prey[a].isHunted == false)){
+      avgLoc.add(prey[a].loc);
+      numClose++;
+    }
+  }
+  if(numClose > 0){
+    avgLoc.divide(numClose);
+    return this.seek(avgLoc);
+  } else {
+    return new JSVector(0,0);
+  }
+}
+
+snakeClass.prototype.seek = function(target){
+  var desired = JSVector.subGetNew(target, this.loc);
+  desired.normalize();
+  desired.multiply(coh);
+  var steer = JSVector.subGetNew(desired, this.vel);
+  steer.limit(0.01);
+  return steer;
+}
+
 snakeClass.prototype.update = function(){
   this.vel.add(this.acc);
-  this.vel.limit(7);
+  this.vel.limit(5);
   this.loc.add(this.vel);
   for(let a = 0; a<this.tails.length; a++){
     this.tails[a].run();
@@ -61,6 +109,7 @@ snakeClass.prototype.checkEdges = function(){
 
 snakeClass.prototype.run = function(){
   this.update();
+  this.huntFunc();
   this.render();
   this.checkEdges();
 }

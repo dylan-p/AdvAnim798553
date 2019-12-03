@@ -57,13 +57,20 @@ preyClass.prototype.applyForce = function(force){
 
 preyClass.prototype.flockFunc = function(){
   let sepForce = this.seperate();
+  let fleeBall = this.fleeBall();
+  let fleeSnake = this.fleeSnake();
   let aliForce = this.align();
   let cohForce = this.cohese();
-  sepForce.multiply(2.5);
-  aliForce.multiply(1.0);
-  cohForce.multiply(1.0);
+
+  sepForce.multiply(2.5); //2.5
+  fleeBall.multiply(3.5); //3.5
+  fleeSnake.multiply(1.5); //1.5
+  aliForce.multiply(1.0); //1.0
+  cohForce.multiply(1.0); //1.0
 
   this.applyForce(sepForce);
+  this.applyForce(fleeBall);
+  this.applyForce(fleeSnake);
   this.applyForce(aliForce);
   this.applyForce(cohForce);
 }
@@ -135,6 +142,58 @@ preyClass.prototype.cohese = function(){
     return new JSVector(0,0);
   }
 }
+
+preyClass.prototype.fleeSnake = function(){
+  var desiredSep = 150;
+  var numClose = 0;
+  var steer = new JSVector(0, 0);
+  for (let a = 0; a < snakes.length; a++) {
+    let d = this.loc.distance(snakes[a].loc);
+    if (d < desiredSep) {
+      var diff = JSVector.subGetNew(this.loc, snakes[a].loc);
+      diff.normalize();
+      diff.divide((d*0.4));
+      steer.add(diff);
+      numClose++;
+    }
+  }
+  if (numClose > 0) {
+    steer.divide(numClose);
+  }
+  if (steer.getMagnitude() > 0) {
+    steer.normalize();
+    steer.multiply(5);
+    steer.sub(this.vel);
+    steer.limit(this.maxForce);
+  }
+    return steer;
+  }
+
+  preyClass.prototype.fleeBall = function(){
+    var desiredSep = 225;
+    var numClose = 0;
+    var steer = new JSVector(0, 0);
+    for (let a = 0; a < ball.length; a++) {
+      let d = this.loc.distance(ball[a].loc);
+      if (d < desiredSep) {
+        var diff = JSVector.subGetNew(this.loc, ball[a].loc);
+        diff.normalize();
+        diff.divide((d*0.4));
+        steer.add(diff);
+        numClose++;
+      }
+    }
+    if (numClose > 0) {
+      steer.divide(numClose);
+    }
+    if (steer.getMagnitude() > 0) {
+      steer.normalize();
+      steer.multiply(5);
+      steer.sub(this.vel);
+      steer.limit(this.maxForce);
+    }
+      return steer;
+    }
 
 preyClass.prototype.seek = function(target){
   var desired = JSVector.subGetNew(target, this.loc);

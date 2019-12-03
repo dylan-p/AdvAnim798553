@@ -57,7 +57,7 @@ function mouseEvent(ev){
 
 function animate(){
   requestAnimationFrame(animate);
-  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+  ctx.clearRect(0, 0, cnv.width, cnv.height);
   sep = document.getElementById("sep").value;
   ali = document.getElementById("align").value;
   coh = document.getElementById("coh").value;
