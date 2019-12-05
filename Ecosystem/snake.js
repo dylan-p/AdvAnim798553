@@ -1,5 +1,6 @@
 function snakeClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, orbRad, weer){
   this.radius = radius;
+  this.maxRadius = this.radius+10;
   this.loc = new JSVector(x, y);
   this.vel = new JSVector(vx, vy);
   this.tails = [];
@@ -15,7 +16,7 @@ function snakeClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, orbRad, weer){
   this.c3 = this.s3*0.8;
   // color values
   this.id = weer;
-  this.tails[0] = new tailClass(this, this, this.radius*0.1, 0)
+  this.tails[0] = new tailClass(this, this, this.radius*0.1, 0);
   for(let a = 1; a<35; a++){
       this.tails[a] = new tailClass(this, this.tails[a-1], this.tails[a-1].length, a);
   }
@@ -38,13 +39,13 @@ snakeClass.prototype.huntFunc = function(){
     //Sets initial hunted state, goes on the prey
     if((this.loc.distance(prey[b].loc) < this.radius) && (prey[b].isHunted === false)){
       prey[b].lifeSpan = -100;
-      partSys.push(new ParticleClass(this.loc.x, this.loc.y, 0.3*Math.random()-0.15, 0.3*Math.random()-0.15, 0, 0));
+      partSys.push(new ParticleClass(this.loc.x, this.loc.y, 0.3*Math.random()-0.15, 0.3*Math.random()-0.15, 0, 0, false));
       if(this.tails.length < 55){
         this.tails.push(new tailClass(this, this.tails[this.tails.length-1], this.tails[this.tails.length-1].length, this.tails.length));
       }
-      if(this.tails.length >= 55){
-        this.tails.splice(35, 19);
-        this.radius +=4;
+      if((this.tails.length >= 55) && (this.radius < this.maxRadius)){
+        // this.tails.splice(35, 19);
+        this.radius +=0.25;
       }
     }
   }
@@ -83,7 +84,7 @@ snakeClass.prototype.seek = function(target){
 
 snakeClass.prototype.update = function(){
   this.vel.add(this.acc);
-  this.vel.limit(5);
+  this.vel.limit(4.5);
   this.loc.add(this.vel);
   for(let a = 0; a<this.tails.length; a++){
     this.tails[a].run();
@@ -98,12 +99,30 @@ snakeClass.prototype.update = function(){
 }
 
 snakeClass.prototype.checkEdges = function(){
-  if((this.loc.x + this.radius > cnv.width && this.vel.x > 0) || (this.loc.x - this.radius < 0 && this.vel.x < 0)){
-    this.vel.x = -this.vel.x;
+  var desire;
+  if(this.loc.x < 40){
+    desire = new JSVector(1, this.vel.y);
+    var steer = JSVector.subGetNew(desire, this.vel);
+    steer.limit(0.25);
+    this.acc.add(steer);
   }
-
-  if((this.loc.y + this.radius > cnv.height && this.vel.y > 0) || (this.loc.y - this.radius < 0 && this.vel.y < 0)){
-    this.vel.y = -this.vel.y;
+  else if(this.loc.x > cnv.width - 40){
+    desire = new JSVector(-1, this.vel.y);
+    var steer = JSVector.subGetNew(desire, this.vel);
+    steer.limit(0.25);
+    this.acc.add(steer);
+  }
+  if(this.loc.y < 40){
+    desire = new JSVector(this.vel.x, 1);
+    var steer = JSVector.subGetNew(desire, this.vel);
+    steer.limit(0.25);
+    this.acc.add(steer);
+  }
+  else if(this.loc.y > cnv.height - 40){
+    desire = new JSVector(this.vel.x, -1);
+    var steer = JSVector.subGetNew(desire, this.vel);
+    steer.limit(0.25);
+    this.acc.add(steer);
   }
 }
 

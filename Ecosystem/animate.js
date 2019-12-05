@@ -2,8 +2,9 @@ window.onload = init;
 var ctx;
 var cnv;
 var numBal = 4; //4
-var numPrey = 50; //50
-var numSnakes = 4; //4
+var numPrey = 65; //65
+var numSuicides = 15; //15
+var numSnakes = 3; //3
 var sep = 0;
 var ali = 0;
 var coh = 0;
@@ -12,11 +13,12 @@ var ball = [];
 var partSys = [];
 var prey = [];
 var snakes = [];
+var suicides = [];
 
 function init(){
   cnv = document.getElementById('cnv');
-  cnv.width = 1500;
-  cnv.height = 750;
+  cnv.width = 1500; //1500
+  cnv.height = 750; //750
   cnv.style.border = 'solid black 2px';
   cnv.style.backgroundColor = 'rgba(0,44,55, 0.1575)';
   ctx = cnv.getContext('2d');
@@ -39,11 +41,14 @@ function init(){
  for(let a = 0; a<numBal; a++){
     ball[a] = new ballClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, -Math.random()*3, 0, 0.03, 50*Math.random()+15, 255*Math.random(), 255*Math.random(), 255*Math.random(), 50+Math.random()*300, a, 10);
  }
- for(let a = 0; a<numPrey; a++){
-    prey[a] = new preyClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, -Math.random()*3, 0, 0, 5);
- }
  for(let a = 0; a<numSnakes; a++){
     snakes[a] = new snakeClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, -Math.random()*3, 0, 0.03, 50*Math.random()+15, 255*Math.random(), 255*Math.random(), 255*Math.random(),  50+Math.random()*300, a);
+ }
+for(let a = 0; a<numPrey; a++){
+   prey[a] = new preyClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, -Math.random()*3, 0, 0);
+ }
+ for(let a = 0; a<numSuicides; a++){
+    suicides[a] = new suicideClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, -Math.random()*3, 0, 0);
  }
   cnv.addEventListener("click", mouseEvent);
 animate();
@@ -52,7 +57,7 @@ animate();
 function mouseEvent(ev){
   var evx = ev.offsetX;
   var evy = ev.offsetY;
-  partSys.push(new ParticleClass(evx, evy, 5*Math.random()-3, 5*Math.random()-3, 0, 0.1*Math.random()));
+  partSys.push(new ParticleClass(evx, evy, 5*Math.random()-3, 5*Math.random()-3, 0, 0.1*Math.random(), true));
 }
 
 function animate(){
@@ -69,9 +74,17 @@ function animate(){
   for(let a = 0; a<numPrey; a++){
     if(prey[a].lifeSpan<=0){
       prey.splice(a, 1);
-      prey.push(new preyClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0, 5));
+      prey.push(new preyClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0));
     }
     prey[a].run();
+  }
+  //Runs suicides, and kills/respawns them
+  for(let a = 0; a<numSuicides; a++){
+    if(suicides[a].lifeSpan<=0){
+      suicides.splice(a, 1);
+      suicides.push(new suicideClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0));
+    }
+    suicides[a].run();
   }
   //runs snakes
   for(let a = 0; a<numSnakes; a++){

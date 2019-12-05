@@ -8,24 +8,16 @@ function Particles(x, y, vx, vy, ax, ay, radius, lsp){
 }
 
 Particles.prototype.render = function(){
-  ctx.strokeStyle = 'rgb(211, 211, 211)';
-  ctx.lineWidth = '10';
-  ctx.fillStyle = 'rgb(211, 211, 211)';
+  ctx.strokeStyle = 'rgb(211, 0, 0)';
+  ctx.lineWidth = '1';
+  ctx.fillStyle = 'rgb(211, 0, 0)';
 
   ctx.save();
   ctx.translate(this.loc.x, this.loc.y);
 
   ctx.beginPath();
-  ctx.moveTo(-3, -4);
-  ctx.lineTo(0, 5);
-  ctx.lineTo(3, -4);
-  ctx.lineTo(0, -1);
-  ctx.lineTo(-3, -4);
-
+  ctx.arc(0, 0, 4.5, 0, Math.PI*2, true);
   ctx.fill();
-  ctx.stroke();
-  ctx.lineWidth = '1';
-  ctx.strokeStyle = 'rgb(1, 1, 1)';
   ctx.stroke();
   ctx.closePath();
 

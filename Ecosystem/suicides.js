@@ -1,18 +1,17 @@
-function preyClass(x, y, vx, vy, ax, ay){
+function suicideClass(x, y, vx, vy, ax, ay){
   this.loc = new JSVector(x, y);
   this.vel = new JSVector(vx, vy);
   this.acc = new JSVector(ax, ay);
-  this.isHunted = false; //detects if it's been hunted before
   this.lifeSpanMax = 300;
   this.lifeSpan = this.lifeSpanMax;
   this.maxSpeed = 3;
   this.maxForce = 0.1;
 }
 
-preyClass.prototype.render = function(){
+suicideClass.prototype.render = function(){
   ctx.strokeStyle = "rgb(0, 0, 0)";
   ctx.lineWidth = '5';
-  ctx.fillStyle = "rgb(" + 0 + ", " + ((this.loc.y*0.45)+30) + ", " + ((this.loc.x*0.165)+30) + ")";
+  ctx.fillStyle = "rgb(" + 124 + ", " + 0 + ", " + 0 + ")";
   ctx.save();
   ctx.translate(this.loc.x, this.loc.y);
   ctx.rotate(this.vel.getDirection() - (Math.PI/2));
@@ -30,85 +29,49 @@ preyClass.prototype.render = function(){
   ctx.restore();
 }
 //Attracts it towards a ball
-preyClass.prototype.peter = function(v2){
+suicideClass.prototype.peter = function(v2){
     var attractionForce = JSVector.subGetNew(v2.loc, this.loc);
     attractionForce.normalize();
     attractionForce.multiply(0.05);
     this.acc.add(attractionForce);
   }
 
-preyClass.prototype.update = function(){
+suicideClass.prototype.update = function(){
   this.vel.add(this.acc);
   this.loc.add(this.vel);
   this.vel.limit(this.maxspeed);
   this.acc.multiply(0);
-  //Makes the lifespan of the prey work, and reset
-  if(this.isHunted){
-    this.lifeSpan-=1;
-  }
-  if(this.isHunted === false){
-    this.lifeSpan = this.lifeSpanMax;
-  }
 }
 
-preyClass.prototype.applyForce = function(force){
+suicideClass.prototype.applyForce = function(force){
   this.acc.add(force);
 }
 
-preyClass.prototype.flockFunc = function(){
-  let sepForce = this.seperate();
+suicideClass.prototype.flockFunc = function(){
   let fleeBall = this.fleeBall();
   let fleeSnake = this.fleeSnake();
   let aliForce = this.align();
   let cohForce = this.cohese();
 
-  sepForce.multiply(2.5); //2.5
-  fleeBall.multiply(3.5); //3.5
+  fleeBall.multiply(1.5); //1.5
   fleeSnake.multiply(1.5); //1.5
-  aliForce.multiply(1.0); //1.0
-  cohForce.multiply(1.0); //1.0
+  aliForce.multiply(1); //1.0
+  cohForce.multiply(5.5); //5.5
 
-  this.applyForce(sepForce);
   this.applyForce(fleeBall);
   this.applyForce(fleeSnake);
   this.applyForce(aliForce);
   this.applyForce(cohForce);
 }
 
-preyClass.prototype.seperate = function(){
-  var desiredSep = 25.0;
-  var numClose = 0;
-  var steer = new JSVector(0, 0);
-  for (let a = 0; a < prey.length; a++) {
-    let d = this.loc.distance(prey[a].loc);
-    if ((d > 0) && (d < desiredSep) && (prey[a].isHunted == false)) {
-      var diff = JSVector.subGetNew(this.loc, prey[a].loc);
-      diff.normalize();
-      diff.divide(d);
-      steer.add(diff);
-      numClose++;
-    }
-  }
-  if (numClose > 0) {
-    steer.divide(numClose);
-  }
-  if (steer.getMagnitude() > 0) {
-    steer.normalize();
-    steer.multiply(sep);
-    steer.sub(this.vel);
-    steer.limit(this.maxForce);
-  }
-    return steer;
-  }
-
-preyClass.prototype.align = function(){
+suicideClass.prototype.align = function(){
   var neighbordist = 50;
   var avgVec = new JSVector(0, 0);
   var numClose = 0;
-  for (let a = 0; a < prey.length; a++) {
-    let d = this.loc.distance(prey[a].loc);
-    if ((d > 0) && (d < neighbordist) && (prey[a].isHunted == false)) {
-      avgVec.add(prey[a].vel);
+  for (let a = 0; a < suicides.length; a++) {
+    let d = this.loc.distance(suicides[a].loc);
+    if ((d > 0) && (d < neighbordist) && (suicides[a].isHunted == false)) {
+      avgVec.add(suicides[a].vel);
       numClose++;
     }
   }
@@ -124,14 +87,14 @@ preyClass.prototype.align = function(){
   }
 }
 
-preyClass.prototype.cohese = function(){
-  var neighbordist = 50;
+suicideClass.prototype.cohese = function(){
+  var neighbordist = 75;
   var avgLoc = new JSVector(0, 0);
   var numClose = 0;
-  for(let a = 0; a < prey.length; a++){
-    let d = this.loc.distance(prey[a].loc);
-    if((d > 0) && (d < neighbordist) && (prey[a].isHunted == false)){
-      avgLoc.add(prey[a].loc);
+  for(let a = 0; a < suicides.length; a++){
+    let d = this.loc.distance(suicides[a].loc);
+    if((d > 0) && (d < neighbordist) && (suicides[a].isHunted == false)){
+      avgLoc.add(suicides[a].loc);
       numClose++;
     }
   }
@@ -143,7 +106,7 @@ preyClass.prototype.cohese = function(){
   }
 }
 
-preyClass.prototype.fleeSnake = function(){
+suicideClass.prototype.fleeSnake = function(){
   var desiredSep = 150;
   var numClose = 0;
   var steer = new JSVector(0, 0);
@@ -167,9 +130,9 @@ preyClass.prototype.fleeSnake = function(){
     steer.limit(this.maxForce);
   }
     return steer;
-}
+  }
 
-preyClass.prototype.fleeBall = function(){
+suicideClass.prototype.fleeBall = function(){
   var desiredSep = 225;
   var numClose = 0;
   var steer = new JSVector(0, 0);
@@ -195,7 +158,18 @@ preyClass.prototype.fleeBall = function(){
     return steer;
   }
 
-preyClass.prototype.seek = function(target){
+suicideClass.prototype.suicideFunc = function(){
+  for(let b = 0; b<suicides.length; b++){
+    if((this.loc.distance(suicides[b].loc) < 20) && (this.loc.distance(suicides[b].loc) > 0)){
+      this.lifeSpan = -100;
+      suicides[b].lifeSpan = -100;
+      partSys.push(new ParticleClass(this.loc.x, this.loc.y, 0.3*Math.random()-0.15, 0.3*Math.random()-0.15, 0, 0, true));
+      partSys.push(new ParticleClass(suicides[b].loc.x, suicides[b].loc.y, 0.3*Math.random()-0.15, 0.3*Math.random()-0.15, 0, 0, true));
+    }
+  }
+}
+
+suicideClass.prototype.seek = function(target){
   var desired = JSVector.subGetNew(target, this.loc);
   desired.normalize();
   desired.multiply(coh);
@@ -204,7 +178,7 @@ preyClass.prototype.seek = function(target){
   return steer;
 }
 
-preyClass.prototype.checkEdges = function(){
+suicideClass.prototype.checkEdges = function(){
   var desire;
   if(this.loc.x < 40){
     desire = new JSVector(this.maxSpeed, this.vel.y);
@@ -231,8 +205,10 @@ preyClass.prototype.checkEdges = function(){
     this.acc.add(steer);
   }
 }
-preyClass.prototype.run = function(){
+
+suicideClass.prototype.run = function(){
   this.flockFunc();
+  this.suicideFunc();
   this.update();
   this.render();
   this.checkEdges();
