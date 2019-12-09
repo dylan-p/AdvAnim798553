@@ -55,7 +55,7 @@ Orbiter.prototype.huntFunc = function(){
       prey[b].isHunted = false;
       this.orbRad = this.orbRadMax;
       this.hasPrey = false;
-      partSys.push(new ParticleClass(this.loc.x, this.loc.y, 0.3*Math.random()-0.15, 0.3*Math.random()-0.15, 0, 0));
+      // partSys.push(new ParticleClass(this.loc.x, this.loc.y, 0.3*Math.random()-0.15, 0.3*Math.random()-0.15, 0, 0));
       // this.parent.isHuntingNow = true;
     }
   }

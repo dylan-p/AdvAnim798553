@@ -4,7 +4,9 @@ var cnv;
 var numBal = 4; //4
 var numPrey = 65; //65
 var numSuicides = 15; //15
+var numLovers = 15;
 var numSnakes = 3; //3
+var numRunners = 8;
 var sep = 0;
 var ali = 0;
 var coh = 0;
@@ -14,6 +16,8 @@ var partSys = [];
 var prey = [];
 var snakes = [];
 var suicides = [];
+var lovers = [];
+var runners = [];
 
 function init(){
   cnv = document.getElementById('cnv');
@@ -37,21 +41,29 @@ function init(){
   document.getElementById("coh").max=10;
   document.getElementById("coh").step="any";
   document.getElementById("coh").value=5;
-//creates creatures
- for(let a = 0; a<numBal; a++){
+  //creates creatures
+  for(let a = 0; a<numBal; a++){
     ball[a] = new ballClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, -Math.random()*3, 0, 0.03, 50*Math.random()+15, 255*Math.random(), 255*Math.random(), 255*Math.random(), 50+Math.random()*300, a, 10);
- }
- for(let a = 0; a<numSnakes; a++){
+  }
+  for(let a = 0; a<numSnakes; a++){
     snakes[a] = new snakeClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, -Math.random()*3, 0, 0.03, 50*Math.random()+15, 255*Math.random(), 255*Math.random(), 255*Math.random(),  50+Math.random()*300, a);
- }
-for(let a = 0; a<numPrey; a++){
-   prey[a] = new preyClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, -Math.random()*3, 0, 0);
- }
- for(let a = 0; a<numSuicides; a++){
+  }
+  for(let a = 0; a<numRunners; a++){
+    runners[a] = new runnerClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, -Math.random()*3, 0, 0.03, 16*Math.random()+5);
+  }
+  for(let a = 0; a<numPrey; a++){
+    prey[a] = new preyClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, -Math.random()*3, 0, 0);
+  }
+  for(let a = 0; a<numSuicides; a++){
     suicides[a] = new suicideClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, -Math.random()*3, 0, 0);
- }
+   }
+  for(let a = 0; a<numLovers; a++){
+    lovers[a] = new loverClass(Math.random()*cnv.width, Math.random()*cnv.height, Math.random()*3, -Math.random()*3, 0, 0);
+  }
+
+  //Detects a mouse click
   cnv.addEventListener("click", mouseEvent);
-animate();
+  animate();
 }
 
 function mouseEvent(ev){
@@ -73,6 +85,7 @@ function animate(){
   //Runs prey, and kills/respawns them
   for(let a = 0; a<numPrey; a++){
     if(prey[a].lifeSpan<=0){
+      partSys.push(new ParticleClass(prey[a].loc.x, prey[a].loc.y, 0.3*Math.random()-0.15, 0.3*Math.random()-0.15, 0, 0));
       prey.splice(a, 1);
       prey.push(new preyClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0));
     }
@@ -86,9 +99,20 @@ function animate(){
     }
     suicides[a].run();
   }
+  //Runs lovers, and kills/respawns them
+  for(let a = 0; a<numLovers; a++){
+    if(lovers[a].lifeSpan<=0){
+      lovers.splice(a, 1);
+      lovers.push(new loverClass(Math.random()*window.innerWidth, Math.random()*window.innerHeight, Math.random()*3, -Math.random()*3, 0, 0));
+    }
+    lovers[a].run();
+  }
   //runs snakes
   for(let a = 0; a<numSnakes; a++){
     snakes[a].run();
+  }
+  for(let a = 0; a<numRunners; a++){
+    runners[a].run();
   }
   //Runs particle systems, and kills/respawns them
   if(partSys != null){
