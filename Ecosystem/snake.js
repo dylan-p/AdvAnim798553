@@ -54,6 +54,26 @@ snakeClass.prototype.huntFunc = function(){
   this.acc.add(goToForce);
 }
 
+snakeClass.prototype.huntRunFunc = function(){
+  for(let b = 0; b<runners.length; b++){
+    //Sets initial hunted state, goes on the runner
+    if((this.loc.distance(runners[b].loc) < (this.radius+runners[b].radius)) && (runners[b].isHunted === false)){
+      runners[b].lifeSpan = -100;
+      partSys.push(new ParticleClass(this.loc.x, this.loc.y, 0.3*Math.random()-0.15, 0.3*Math.random()-0.15, 0, 0, false));
+      if(this.tails.length < 55){
+        this.tails.push(new tailClass(this, this.tails[this.tails.length-1], this.tails[this.tails.length-1].length, this.tails.length));
+      }
+      if((this.tails.length >= 55) && (this.radius < this.maxRadius)){
+        // this.tails.splice(35, 19);
+        this.radius +=0.25;
+      }
+    }
+  }
+  let goToForce = this.goToRunner();
+  goToForce.multiply(0.5); //0.5
+  this.acc.add(goToForce);
+}
+
 snakeClass.prototype.goToPrey = function(){
   var neighbordist = 150;
   var avgLoc = new JSVector(0, 0);
@@ -62,6 +82,25 @@ snakeClass.prototype.goToPrey = function(){
     let d = this.loc.distance(prey[a].loc);
     if((d > 0) && (d < neighbordist) && (prey[a].isHunted == false)){
       avgLoc.add(prey[a].loc);
+      numClose++;
+    }
+  }
+  if(numClose > 0){
+    avgLoc.divide(numClose);
+    return this.seek(avgLoc);
+  } else {
+    return new JSVector(0,0);
+  }
+}
+
+snakeClass.prototype.goToRunner = function(){
+  var neighbordist = 150;
+  var avgLoc = new JSVector(0, 0);
+  var numClose = 0;
+  for(let a = 0; a < runners.length; a++){
+    let d = this.loc.distance(runners[a].loc);
+    if((d > 0) && (d < neighbordist) && (runners[a].isHunted == false)){
+      avgLoc.add(runners[a].loc);
       numClose++;
     }
   }
@@ -129,6 +168,7 @@ snakeClass.prototype.checkEdges = function(){
 snakeClass.prototype.run = function(){
   this.update();
   this.huntFunc();
+  this.huntRunFunc();
   this.render();
   this.checkEdges();
 }

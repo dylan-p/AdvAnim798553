@@ -21,8 +21,8 @@ var runners = [];
 
 function init(){
   cnv = document.getElementById('cnv');
-  cnv.width = 1500; //1500
-  cnv.height = 750; //750
+  cnv.width = 3000; //1500
+  cnv.height = 1500; //750
   cnv.style.border = 'solid black 2px';
   cnv.style.backgroundColor = 'rgba(0,44,55, 0.1575)';
   ctx = cnv.getContext('2d');
@@ -112,6 +112,10 @@ function animate(){
     snakes[a].run();
   }
   for(let a = 0; a<numRunners; a++){
+    if(runners[a].lifeSpan<=0){
+      runners.splice(a, 1);
+      runners.push(new runnerClass(Math.random()*window.width, Math.random()*window.height, Math.random()*3, -Math.random()*3, 0, 0.03, 16*Math.random()+5));
+    }
     runners[a].run();
   }
   //Runs particle systems, and kills/respawns them

@@ -6,7 +6,9 @@ function runnerClass(x, y, vx, vy, ax, ay, radius){
   this.acc = new JSVector(0, 0);
   this.mag = this.vel.getMagnitude();
   this.newVector = new JSVector(vx, vy);
-//   // color values
+  this.lifeSpanMax = 300;
+  this.lifeSpan = this.lifeSpanMax;
+  // color values
   this.s1 = 255;
   this.s2 = 215;
   this.s3 = 0;
@@ -98,25 +100,25 @@ runnerClass.prototype.checkEdges = function(){
   if(this.loc.x < 40){
     desire = new JSVector(1, this.vel.y);
     var steer = JSVector.subGetNew(desire, this.vel);
-    steer.limit(0.25);
+    steer.limit(this.maxForce*5);
     this.acc.add(steer);
   }
   else if(this.loc.x > cnv.width - 40){
     desire = new JSVector(-1, this.vel.y);
     var steer = JSVector.subGetNew(desire, this.vel);
-    steer.limit(0.25);
+    steer.limit(this.maxForce*5);
     this.acc.add(steer);
   }
   if(this.loc.y < 40){
     desire = new JSVector(this.vel.x, 1);
     var steer = JSVector.subGetNew(desire, this.vel);
-    steer.limit(0.25);
+    steer.limit(this.maxForce*5);
     this.acc.add(steer);
   }
   else if(this.loc.y > cnv.height - 40){
     desire = new JSVector(this.vel.x, -1);
     var steer = JSVector.subGetNew(desire, this.vel);
-    steer.limit(0.25);
+    steer.limit(this.maxForce*5);
     this.acc.add(steer);
   }
 }
