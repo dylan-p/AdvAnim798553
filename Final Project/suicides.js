@@ -7,7 +7,14 @@ function suicideClass(x, y, vx, vy, ax, ay){
   this.maxSpeed = 3;
   this.maxForce = 0.1;
 }
-
+/*
+Lab Features
+  Particle systems
+  Collision detection
+Behaviors
+  Die
+  Self-destruction
+*/
 suicideClass.prototype.render = function(){
   ctx.strokeStyle = "rgb(0, 0, 0)";
   ctx.lineWidth = '5';

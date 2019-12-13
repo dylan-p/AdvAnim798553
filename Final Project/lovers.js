@@ -7,6 +7,17 @@ function loverClass(x, y, vx, vy, ax, ay){
   this.maxSpeed = 3;
   this.maxForce = 0.1;
 }
+/*
+Lab Features
+  Attraction
+  Collision detection
+  Repulsion
+Behaviors
+  Mate
+  Die
+    Has a lifespan and dies naturally over time
+*/
+
 
 loverClass.prototype.render = function(){
   ctx.strokeStyle = "rgb(0, 0, 0)";

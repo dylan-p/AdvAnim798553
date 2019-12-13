@@ -21,7 +21,17 @@ function runnerClass(x, y, vx, vy, ax, ay, radius){
       this.tails[a] = new tailClass(this, this.tails[a-1], this.tails[a-1].length, a);
   }
 }
-
+/*
+Lab Features
+  Repulsion
+  Snake Code
+  Collision detection
+Behaviors
+  Flee
+  Die
+  Hide
+    Will hide around the ball in the middle of the ball array
+*/
 runnerClass.prototype.render = function(){
   ctx.strokeStyle = "rgb(" + this.s1  + "," + this.s2 + "," + this.s3 + ")";
   ctx.lineWidth = '3';

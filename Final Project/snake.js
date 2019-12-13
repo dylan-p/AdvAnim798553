@@ -21,7 +21,16 @@ function snakeClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, orbRad, weer){
       this.tails[a] = new tailClass(this, this.tails[a-1], this.tails[a-1].length, a);
   }
 }
-
+/*
+Lab Features
+  Snake
+  Collision Detection
+Behaviors
+  Attack
+  Crapping
+  Grow
+    Will increase tail length, up to a certain cap
+*/
 snakeClass.prototype.render = function(){
   ctx.strokeStyle = "rgb(" + this.s1 + 20 + "," + this.s2 + 20 + "," + this.s3 + 20 + ")";
   ctx.lineWidth = '3';
