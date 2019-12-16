@@ -31,6 +31,8 @@ Behaviors
   Die
   Hide
     Will hide around the ball in the middle of the ball array
+Color
+ Yellow
 */
 runnerClass.prototype.render = function(){
   ctx.strokeStyle = "rgb(" + this.s1  + "," + this.s2 + "," + this.s3 + ")";

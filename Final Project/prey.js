@@ -8,7 +8,16 @@ function preyClass(x, y, vx, vy, ax, ay){
   this.maxSpeed = 3;
   this.maxForce = 0.1;
 }
-
+/*
+Lab Features
+  Flocking
+  Transformation
+Behaviors
+  Flee
+  Die
+Color
+  Changes based on location
+*/
 preyClass.prototype.render = function(){
   ctx.strokeStyle = "rgb(0, 0, 0)";
   ctx.lineWidth = '5';

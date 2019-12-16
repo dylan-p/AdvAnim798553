@@ -1,4 +1,3 @@
-
 function ballClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, orbRad, weer, numOrbPass){
   this.radius = radius;
   this.loc = new JSVector(x, y);
@@ -23,7 +22,17 @@ function ballClass(x, y, vx, vy, ax, ay, radius, s1, s2, s3, orbRad, weer, numOr
       this.orbiter[a] = new Orbiter(9, 0, 0, orbRad, ((2*Math.PI)/(this.numOrb)*a), this.loc, this);
   }
 }
-
+/*
+Lab Features
+  Orbiting
+  Attraction
+  Collision detection
+Behaviors
+  Attack
+  Crapping
+Color
+  Random
+*/
 ballClass.prototype.render = function(){
   ctx.strokeStyle = "rgb(" + this.s1 + 20 + "," + this.s2 + 20 + "," + this.s3 + 20 + ")";
   ctx.lineWidth = '6';

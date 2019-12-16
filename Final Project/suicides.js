@@ -14,6 +14,9 @@ Lab Features
 Behaviors
   Die
   Self-destruction
+
+Color
+  Red-maroon
 */
 suicideClass.prototype.render = function(){
   ctx.strokeStyle = "rgb(0, 0, 0)";

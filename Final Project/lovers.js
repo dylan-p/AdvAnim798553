@@ -16,6 +16,9 @@ Behaviors
   Mate
   Die
     Has a lifespan and dies naturally over time
+Color
+  Purple
+    Gets slightly darker as it dies
 */
 
 

@@ -30,6 +30,8 @@ Behaviors
   Crapping
   Grow
     Will increase tail length, up to a certain cap
+Color
+  Random
 */
 snakeClass.prototype.render = function(){
   ctx.strokeStyle = "rgb(" + this.s1 + 20 + "," + this.s2 + 20 + "," + this.s3 + 20 + ")";
