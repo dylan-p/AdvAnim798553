@@ -1,22 +1,3 @@
-// window.onload = init;
-// var ctx;
-// var cnv;
-// function init(){
-//   cnv = document.getElementById('cnv');
-//   // cnv.width = 3000; //1500
-//   // cnv.height = 1500; //750
-//   // cnv.style.border = 'solid black 2px';
-//   // cnv.style.backgroundColor = 'rgba(0,44,55, 0.1575)';
-//   ctx = cnv.getContext('2d');
-//   animate();
-// }
-//
-// function animate(){
-//   requestAnimationFrame(animate);
-//   ctx.clearRect(0, 0, cnv.width, cnv.height);
-//   // module aliases
-//
-// }
 
 window.addEventListener('load', setup);
 
@@ -25,6 +6,9 @@ var Engine = Matter.Engine,
     Render = Matter.Render,
     World = Matter.World,
     Bodies = Matter.Bodies,
+    MouseConstraint = Matter.MouseConstraint,
+    Mouse = Matter.Mouse,
+    Events = Matter.Events;
     Body = Matter.Body;
 
 // create an engine
@@ -45,8 +29,16 @@ var recA = Bodies.rectangle(540, -35, 60, 220);
 var suite = Body.create({parts: [circleB, circleC, recA]});
 var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
 
+//creates box on mouse click
+  cMouse = Mouse.create(document.body);
+  options = {mouse:cMouse};
+  mc = MouseConstraint.create(engine, options);
+  Events.on(mc, "mousedown", function(){
+  World.add(engine.world, Bodies.rectangle(mc.mouse.position.x, mc.mouse.position.y, 45, 45));
+});
+
 // add all of the bodies to the world
-World.add(engine.world, [boxA, circleA, suite, ground]);
+World.add(engine.world, [boxA, circleA, suite, ground, mc]);
 
 // run the engine
 Engine.run(engine);
