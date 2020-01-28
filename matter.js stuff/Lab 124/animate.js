@@ -43,14 +43,14 @@ var render = Render.create({
 // create two boxes and a ground
 var boxA = Bodies.rectangle(475, 200, 80, 80, {
     collisionFilter: {
-        mask: defaultCategory | redCategory
+        mask: redCategory
     },
     render: {
         fillStyle: redColor
     }});
 var circleA = Bodies.circle(350, 50, 40, {
     collisionFilter: {
-        mask: defaultCategory | blueCategory
+        mask: blueCategory
     },
     render: {
         fillStyle: blueColor
@@ -58,7 +58,7 @@ var circleA = Bodies.circle(350, 50, 40, {
 });
 var circleB = Bodies.circle(500, 35, 40, {
     collisionFilter: {
-        mask: defaultCategory | greenCategory
+        mask: greenCategory
     },
     render: {
         fillStyle: greenColor
@@ -66,7 +66,7 @@ var circleB = Bodies.circle(500, 35, 40, {
 });
 var circleC = Bodies.circle(580, 35, 40, {
     collisionFilter: {
-        mask: defaultCategory | greenCategory
+        mask: greenCategory
     },
     render: {
         fillStyle: greenColor
@@ -84,13 +84,17 @@ var circleC = Bodies.circle(580, 35, 40, {
 //There is NO collsion filtering on composites - I checked the documentation
 var suite = Body.create({parts: [circleB, circleC]}, {
     collisionFilter: {
-        mask: defaultCategory | greenCategory
+        mask: greenCategory
     },
     render: {
         fillStyle: greenColor
     }
 });
-var ground = Bodies.rectangle(400, 610, 810, 60, {isStatic: true});
+var ground = Bodies.rectangle(400, 610, 810, 60, {
+    collisionFilter: {
+        mask: defaultCategory | redCategory | blueCategory | greenCategory
+    },
+  isStatic: true});
 
 //creates box on mouse click
   cMouse = Mouse.create(document.body);
@@ -107,7 +111,7 @@ var ground = Bodies.rectangle(400, 610, 810, 60, {isStatic: true});
 
 //Creates a blue ball on keydown - hold down a key for fun
 document.body.addEventListener("keydown", function(x) {World.add(engine.world, Bodies.circle(mc.mouse.position.x, mc.mouse.position.y, 15, {collisionFilter: {
-  mask: defaultCategory | blueCategory
+  mask: blueCategory
   },
   render: {
     fillStyle: blueColor
