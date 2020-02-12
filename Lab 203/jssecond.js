@@ -6,6 +6,8 @@ var MINIctx;
 var numBal = 10;
 var ball = [];
 var ballMINI = [];
+var locax;
+var locay;
 
 function init(){
   cnv = document.getElementById('cnv');
@@ -14,6 +16,8 @@ function init(){
   MINIctx = MINIcnv.getContext('2d');
   cnv.width = 800;
   cnv.height = 600;
+  locax = cnv.width/2;
+  locay = cnv.height/2;
   cnv.style.border = 'solid black 2px';
   cnv.style.backgroundColor = 'rgba(0,44,55, .5)';
   for(let a = 0; a<numBal; a++){
@@ -25,10 +29,18 @@ animate();
 }
 
 document.addEventListener('keydown', (e) => {
-  if (e.code === "ArrowUp")      ctx.translate(0, 25)
-  else if (e.code === "ArrowDown")      ctx.translate(0, -25)
-  else if (e.code === "ArrowLeft")      ctx.translate(25, 0)
-  else if (e.code === "ArrowRight")      ctx.translate(-25, 0)
+  if (e.code === "ArrowUp"){
+    ctx.translate(0, 25);
+    locay-=25;
+  }else if (e.code === "ArrowDown"){
+    ctx.translate(0, -25);
+    locay+=25;
+  }else if (e.code === "ArrowLeft"){
+    ctx.translate(25, 0);
+    locax-=25;
+  }else if (e.code === "ArrowRight"){
+    ctx.translate(-25, 0);
+    locax+=25;}
   animate();
 });
 
@@ -47,5 +59,6 @@ function animate(){
     MINIctx.stroke();
   }
   MINIctx.fillRect(MINIcnv.width/2, MINIcnv.height/2, 10, 10);
+  ctx.fillRect(locax, locay, 20, 20);
   MINIctx.arc(100, 100, 10, 0, Math.PI*2, true);
 }
